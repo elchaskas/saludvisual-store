@@ -61,6 +61,9 @@ El objetivo no es reutilizar el ZIP `2.2.5`; hay que recompilar una build real
    .\firmar-saludvisual.ps1 -FilePath .\artifacts\v2.2.6\staging\win-x64\DesinstalarSaludVisual.exe -SubjectContains "Eric Sanchez Linares"
    ```
 
+   El script usa `Set-AuthenticodeSignature` y falla si la firma resultante no
+   queda en estado `Valid`.
+
 3. Empaquetar la carpeta firmada. Este paso comprueba firma Authenticode y que
    los ejecutables firmados tengan version `2.2.6.0` antes de crear el ZIP:
 
@@ -110,6 +113,9 @@ El objetivo no es reutilizar el ZIP `2.2.5`; hay que recompilar una build real
    ```powershell
    -DeleteVersions 2.2.5,2.2.6 -ConfirmDeleteText "BORRAR 2.2.5,2.2.6"
    ```
+
+9. Completar el cuestionario de Microsoft Store con
+   `STORE_QUESTIONNAIRE_2.2.6.md`.
 
 ## Importante: no reutilizar binarios 2.2.5
 
