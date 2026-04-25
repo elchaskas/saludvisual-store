@@ -31,34 +31,85 @@ Archivos opcionales pero recomendados:
 - `salud-visual.ico`
 - `Instalar-SaludVisual-v2-SinAdmin.cmd`
 
-## Checklist antes de subir a Store
+## Flujo correcto para publicar 2.2.6
 
-1. Compilar los proyectos Windows en modo Release para `win-x64`.
-2. Confirmar que todos los binarios reportan version de producto `2.2.6`.
-3. Firmar digitalmente `SaludVisual.exe`, `InstalarSaludVisual.exe` y
-   `DesinstalarSaludVisual.exe`.
-4. Empaquetar el contenido como `SaludVisual-2.2.6-win-x64.zip`.
-5. Ejecutar la validacion local:
+El objetivo no es reutilizar el ZIP `2.2.5`; hay que recompilar una build real
+`2.2.6`, firmarla otra vez y publicar un artefacto limpio en Azure.
 
-   ```bash
-   python3 scripts/validate_store_package.py SaludVisual-2.2.6-win-x64.zip
+1. Ejecutar el build desde el checkout que contiene los proyectos `.csproj`:
+
+   ```powershell
+   .\scripts\build_windows_release.ps1 `
+     -SourceRoot . `
+     -Version 2.2.6
    ```
 
-6. Probar instalacion silenciosa en una maquina Windows limpia:
+   El script publica:
+
+   - `SaludVisual.Windows\SaludVisual.Windows.csproj`
+   - `SaludVisual.Installer\SaludVisual.Installer.csproj`
+   - `SaludVisual.Uninstaller\SaludVisual.Uninstaller.csproj`
+
+   y prepara `artifacts\v2.2.6\staging\win-x64`.
+
+2. Firmar digitalmente los tres ejecutables generados con el script de firma del
+   proyecto:
+
+   ```powershell
+   .\firmar-saludvisual.ps1 -FilePath .\artifacts\v2.2.6\staging\win-x64\SaludVisual.exe -SubjectContains "Eric Sanchez Linares"
+   .\firmar-saludvisual.ps1 -FilePath .\artifacts\v2.2.6\staging\win-x64\InstalarSaludVisual.exe -SubjectContains "Eric Sanchez Linares"
+   .\firmar-saludvisual.ps1 -FilePath .\artifacts\v2.2.6\staging\win-x64\DesinstalarSaludVisual.exe -SubjectContains "Eric Sanchez Linares"
+   ```
+
+3. Empaquetar la carpeta firmada. Este paso comprueba firma Authenticode y que
+   los ejecutables firmados tengan version `2.2.6.0` antes de crear el ZIP:
+
+   ```powershell
+   .\scripts\package_windows_release.ps1 `
+     -Version 2.2.6
+   ```
+
+4. Validar el paquete final contra `2.2.5`:
+
+   ```bash
+   python3 scripts/validate_store_package.py \
+     artifacts/v2.2.6/SaludVisual-2.2.6-win-x64.zip \
+     --previous-package artifacts/v2.2.5/SaludVisual-2.2.5-win-x64.zip
+   ```
+
+5. Probar instalacion silenciosa en una maquina Windows limpia:
 
    ```powershell
    .\InstalarSaludVisual.exe /silent
    echo $LASTEXITCODE
    ```
 
-7. Probar desinstalacion silenciosa:
+6. Probar desinstalacion silenciosa:
 
    ```powershell
    .\DesinstalarSaludVisual.exe /silent
    echo $LASTEXITCODE
    ```
 
-8. Verificar que ambos comandos devuelven `0` en caso exitoso.
+7. Verificar que ambos comandos devuelven `0` en caso exitoso.
+8. Publicar en Azure limpiando primero los artefactos `2.2.6` anteriores:
+
+   ```powershell
+   .\scripts\publish_azure_release.ps1 `
+     -Version 2.2.6 `
+     -PackagePath .\artifacts\v2.2.6\SaludVisual-2.2.6-win-x64.zip `
+     -StorageAccountName stsaludvisual73023 `
+     -ContainerName releases `
+     -DeleteExisting `
+     -ConfirmDelete
+   ```
+
+   Si tambien hay que eliminar blobs antiguos `2.2.5` del contenedor para evitar
+   que se use una copia vieja por error, agregar:
+
+   ```powershell
+   -DeleteVersions 2.2.5,2.2.6 -ConfirmDeleteText "BORRAR 2.2.5,2.2.6"
+   ```
 
 ## Importante: no reutilizar binarios 2.2.5
 
