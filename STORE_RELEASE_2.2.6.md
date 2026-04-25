@@ -60,11 +60,47 @@ Archivos opcionales pero recomendados:
 
 8. Verificar que ambos comandos devuelven `0` en caso exitoso.
 
+## Importante: no reutilizar binarios 2.2.5
+
+El paquete `v2.2.5` publicado en GitHub contiene ejecutables firmados con
+version embebida `2.2.5.0`:
+
+- `SaludVisual.exe`
+- `InstalarSaludVisual.exe`
+- `DesinstalarSaludVisual.exe`
+
+Renombrar el ZIP, cambiar solo `README.txt`/`VERSION.txt` o parchear esos
+`.exe` no produce una version Store valida:
+
+- Si se dejan los `.exe` intactos, Microsoft Store puede detectarlo como la
+  misma copia/binario que el envio anterior.
+- Si se editan los `.exe` para cambiar `2.2.5` por `2.2.6`, se invalida la
+  firma Authenticode existente.
+
+La ruta segura para `2.2.6` es rebuild de los tres ejecutables con version
+`2.2.6.0` y firma nueva con el certificado de publicador usado para `2.2.5`
+(`CN = Eric Sanchez Linares`, cadena SSL.com Code Signing).
+
+Se probo crear un candidato `SaludVisual-2.2.6-win-x64.zip` partiendo del ZIP
+`2.2.5` y cambiando solo textos (`README.txt`, `LEEME-INSTALADOR-GUI.txt` y
+`VERSION.txt`). El validador lo rechaza porque los tres `.exe` siguen siendo
+binarios `2.2.5`, firmados e identicos al envio anterior.
+
+Para detectar ese caso antes de subir a Partner Center:
+
+```bash
+python3 scripts/validate_store_package.py \
+  SaludVisual-2.2.6-win-x64.zip \
+  --previous-package artifacts/v2.2.5/SaludVisual-2.2.5-win-x64.zip
+```
+
 ## Nota de estado
 
 Al preparar esta rama se confirmo que:
 
 - El release `v2.2.5` existe en GitHub con artefactos Windows y macOS.
+- Los ejecutables Windows de `v2.2.5` estan firmados y contienen version
+  embebida `2.2.5.0`; no deben reutilizarse para `2.2.6`.
 - No hay artefactos publicos `2.2.6` en el contenedor Azure usado por releases
   previos.
 - Este repositorio no contiene los proyectos `.csproj` necesarios para recompilar

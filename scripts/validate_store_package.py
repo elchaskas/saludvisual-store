@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
+import struct
 import sys
 import zipfile
 from pathlib import Path
@@ -26,6 +28,11 @@ RECOMMENDED_WINDOWS_FILES = {
 
 STORE_INSTALL_COMMAND = "InstalarSaludVisual.exe /silent"
 STORE_UNINSTALL_COMMAND = "DesinstalarSaludVisual.exe /silent"
+WINDOWS_EXECUTABLES = (
+    "InstalarSaludVisual.exe",
+    "DesinstalarSaludVisual.exe",
+    "SaludVisual.exe",
+)
 
 
 def _read_text(archive: zipfile.ZipFile, name: str) -> str:
@@ -33,7 +40,69 @@ def _read_text(archive: zipfile.ZipFile, name: str) -> str:
     return data.decode("utf-8-sig")
 
 
-def _validate_windows_package(path: Path, version: str) -> list[str]:
+def _contains_text(data: bytes, text: str) -> bool:
+    return text.encode("utf-8") in data or text.encode("utf-16le") in data
+
+
+def _has_authenticode_signature(data: bytes) -> bool:
+    if data[:2] != b"MZ":
+        return False
+
+    try:
+        pe_offset = struct.unpack_from("<I", data, 0x3C)[0]
+        if data[pe_offset : pe_offset + 4] != b"PE\0\0":
+            return False
+
+        optional_header_offset = pe_offset + 24
+        magic = struct.unpack_from("<H", data, optional_header_offset)[0]
+        if magic == 0x10B:
+            data_directories_offset = optional_header_offset + 96
+        elif magic == 0x20B:
+            data_directories_offset = optional_header_offset + 112
+        else:
+            return False
+
+        cert_offset, cert_size = struct.unpack_from(
+            "<II", data, data_directories_offset + 32
+        )
+    except struct.error:
+        return False
+
+    return cert_offset > 0 and cert_size > 0
+
+
+def _sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _validate_against_previous_package(
+    archive: zipfile.ZipFile, previous_path: Path
+) -> list[str]:
+    errors: list[str] = []
+
+    try:
+        with zipfile.ZipFile(previous_path) as previous:
+            previous_names = set(previous.namelist())
+            for exe_name in WINDOWS_EXECUTABLES:
+                if exe_name not in archive.namelist() or exe_name not in previous_names:
+                    continue
+
+                current_hash = _sha256(archive.read(exe_name))
+                previous_hash = _sha256(previous.read(exe_name))
+                if current_hash == previous_hash:
+                    errors.append(
+                        f"{exe_name} es identico al paquete anterior; "
+                        "Store puede rechazarlo como misma copia"
+                    )
+    except zipfile.BadZipFile:
+        errors.append(f"El paquete anterior no es un ZIP valido: {previous_path}")
+
+    return errors
+
+
+def _validate_windows_package(
+    path: Path, version: str, previous_package: Path | None
+) -> list[str]:
     errors: list[str] = []
 
     try:
@@ -51,13 +120,27 @@ def _validate_windows_package(path: Path, version: str) -> list[str]:
                     file=sys.stderr,
                 )
 
-            for exe_name in (
-                "InstalarSaludVisual.exe",
-                "DesinstalarSaludVisual.exe",
-                "SaludVisual.exe",
-            ):
+            previous_minor_version = ".".join(version.split(".")[:2] + ["5"])
+            for exe_name in WINDOWS_EXECUTABLES:
                 if exe_name in names and archive.getinfo(exe_name).file_size <= 0:
                     errors.append(f"{exe_name} esta vacio")
+                    continue
+
+                if exe_name not in names:
+                    continue
+
+                exe_data = archive.read(exe_name)
+                if not _has_authenticode_signature(exe_data):
+                    errors.append(f"{exe_name} no contiene firma Authenticode")
+                if not _contains_text(exe_data, version):
+                    errors.append(f"{exe_name} no contiene la version embebida {version}")
+                if previous_minor_version != version and _contains_text(
+                    exe_data, previous_minor_version
+                ):
+                    errors.append(
+                        f"{exe_name} todavia contiene referencias a "
+                        f"{previous_minor_version}"
+                    )
 
             if "VERSION.txt" in names:
                 version_text = _read_text(archive, "VERSION.txt")
@@ -91,6 +174,9 @@ def _validate_windows_package(path: Path, version: str) -> list[str]:
                     errors.append("El instalador CMD no usa %LOCALAPPDATA%\\SaludVisual")
                 if "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" not in cmd:
                     errors.append("El instalador CMD no configura el inicio automatico HKCU")
+
+            if previous_package:
+                errors.extend(_validate_against_previous_package(archive, previous_package))
     except zipfile.BadZipFile:
         errors.append("El archivo no es un ZIP valido")
 
@@ -122,6 +208,11 @@ def main() -> int:
         choices=("win-x64",),
         help="Plataforma del paquete a validar",
     )
+    parser.add_argument(
+        "--previous-package",
+        type=Path,
+        help="ZIP de la version anterior para detectar binarios reutilizados",
+    )
     args = parser.parse_args()
 
     errors = []
@@ -130,8 +221,12 @@ def main() -> int:
 
     if not args.zip_path.exists():
         errors.append(f"No existe el archivo: {args.zip_path}")
+    elif args.previous_package and not args.previous_package.exists():
+        errors.append(f"No existe el paquete anterior: {args.previous_package}")
     elif args.platform == "win-x64":
-        errors.extend(_validate_windows_package(args.zip_path, args.version))
+        errors.extend(
+            _validate_windows_package(args.zip_path, args.version, args.previous_package)
+        )
 
     if errors:
         print("Validacion fallida:")
