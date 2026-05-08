@@ -33,6 +33,20 @@ WINDOWS_EXECUTABLES = (
     "DesinstalarSaludVisual.exe",
     "SaludVisual.exe",
 )
+MAC_PLATFORMS = ("mac-osx-arm64", "mac-osx-x64")
+REQUIRED_MAC_SUFFIXES = {
+    "LICENSE-ACTIVATION.txt",
+    "README.txt",
+    "VERSION.txt",
+    "SaludVisual.app/Contents/Info.plist",
+    "SaludVisual.app/Contents/Resources/activation-config.json",
+}
+MAC_LICENSE_MARKERS = (
+    "licenseMode",
+    "per-installation",
+    "productUrl",
+    "licenseApiUrl",
+)
 
 
 def _read_text(archive: zipfile.ZipFile, name: str) -> str:
@@ -76,19 +90,28 @@ def _sha256(data: bytes) -> str:
 
 
 def _validate_against_previous_package(
-    archive: zipfile.ZipFile, previous_path: Path
+    archive: zipfile.ZipFile, previous_path: Path, executable_names: tuple[str, ...]
 ) -> list[str]:
     errors: list[str] = []
 
     try:
         with zipfile.ZipFile(previous_path) as previous:
             previous_names = set(previous.namelist())
-            for exe_name in WINDOWS_EXECUTABLES:
+            current_names = set(archive.namelist())
+            for exe_name in executable_names:
                 if exe_name not in archive.namelist() or exe_name not in previous_names:
-                    continue
+                    current_match = _find_by_suffix(current_names, exe_name)
+                    previous_match = _find_by_suffix(previous_names, exe_name)
+                    if not current_match or not previous_match:
+                        continue
+                    current_name = current_match
+                    previous_name = previous_match
+                else:
+                    current_name = exe_name
+                    previous_name = exe_name
 
-                current_hash = _sha256(archive.read(exe_name))
-                previous_hash = _sha256(previous.read(exe_name))
+                current_hash = _sha256(archive.read(current_name))
+                previous_hash = _sha256(previous.read(previous_name))
                 if current_hash == previous_hash:
                     errors.append(
                         f"{exe_name} es identico al paquete anterior; "
@@ -98,6 +121,21 @@ def _validate_against_previous_package(
         errors.append(f"El paquete anterior no es un ZIP valido: {previous_path}")
 
     return errors
+
+
+def _find_by_suffix(names: set[str], suffix: str) -> str | None:
+    suffix = suffix.strip("/")
+    for name in sorted(names):
+        if name.strip("/").endswith(suffix):
+            return name
+    return None
+
+
+def _read_by_suffix(archive: zipfile.ZipFile, names: set[str], suffix: str) -> str | None:
+    match = _find_by_suffix(names, suffix)
+    if not match:
+        return None
+    return _read_text(archive, match)
 
 
 def _validate_windows_package(
@@ -176,7 +214,91 @@ def _validate_windows_package(
                     errors.append("El instalador CMD no configura el inicio automatico HKCU")
 
             if previous_package:
-                errors.extend(_validate_against_previous_package(archive, previous_package))
+                errors.extend(
+                    _validate_against_previous_package(
+                        archive, previous_package, WINDOWS_EXECUTABLES
+                    )
+                )
+    except zipfile.BadZipFile:
+        errors.append("El archivo no es un ZIP valido")
+
+    return errors
+
+
+def _validate_macos_package(
+    path: Path, version: str, previous_package: Path | None
+) -> list[str]:
+    errors: list[str] = []
+
+    try:
+        with zipfile.ZipFile(path) as archive:
+            names = set(archive.namelist())
+            missing = sorted(
+                suffix
+                for suffix in REQUIRED_MAC_SUFFIXES
+                if not _find_by_suffix(names, suffix)
+            )
+            if missing:
+                errors.append(f"Faltan archivos macOS requeridos: {', '.join(missing)}")
+
+            version_text = _read_by_suffix(archive, names, "VERSION.txt")
+            if version_text and f"Salud Visual {version}" not in version_text:
+                errors.append("VERSION.txt no contiene la version esperada")
+
+            readme = _read_by_suffix(archive, names, "README.txt")
+            if readme:
+                if f"v{version}" not in readme:
+                    errors.append("README.txt no menciona la version esperada")
+                if "Licencia de activacion" not in readme:
+                    errors.append("README.txt no documenta la licencia de activacion")
+                if "Web oficial" not in readme:
+                    errors.append("README.txt no documenta la web oficial")
+
+            activation_notes = _read_by_suffix(
+                archive, names, "LICENSE-ACTIVATION.txt"
+            )
+            if activation_notes:
+                if "por instalacion" not in activation_notes:
+                    errors.append(
+                        "LICENSE-ACTIVATION.txt no documenta licencia por instalacion"
+                    )
+                if "Web oficial" not in activation_notes:
+                    errors.append("LICENSE-ACTIVATION.txt no documenta la web oficial")
+
+            activation_config = _read_by_suffix(
+                archive,
+                names,
+                "SaludVisual.app/Contents/Resources/activation-config.json",
+            )
+            if activation_config:
+                for marker in MAC_LICENSE_MARKERS:
+                    if marker not in activation_config:
+                        errors.append(
+                            "activation-config.json no contiene "
+                            f"el marcador requerido '{marker}'"
+                        )
+                if version not in activation_config:
+                    errors.append("activation-config.json no contiene la version esperada")
+
+            info_plist = _read_by_suffix(
+                archive, names, "SaludVisual.app/Contents/Info.plist"
+            )
+            if info_plist and version not in info_plist:
+                errors.append("Info.plist no contiene la version esperada")
+
+            mac_executable = "SaludVisual.app/Contents/MacOS/SaludVisual"
+            executable_name = _find_by_suffix(names, mac_executable)
+            if not executable_name:
+                errors.append("Falta el ejecutable de macOS SaludVisual.app/Contents/MacOS/SaludVisual")
+            elif archive.getinfo(executable_name).file_size <= 0:
+                errors.append("El ejecutable de macOS esta vacio")
+
+            if previous_package:
+                errors.extend(
+                    _validate_against_previous_package(
+                        archive, previous_package, (mac_executable,)
+                    )
+                )
     except zipfile.BadZipFile:
         errors.append("El archivo no es un ZIP valido")
 
@@ -205,7 +327,7 @@ def main() -> int:
     parser.add_argument(
         "--platform",
         default="win-x64",
-        choices=("win-x64",),
+        choices=("win-x64", *MAC_PLATFORMS),
         help="Plataforma del paquete a validar",
     )
     parser.add_argument(
@@ -227,6 +349,10 @@ def main() -> int:
         errors.extend(
             _validate_windows_package(args.zip_path, args.version, args.previous_package)
         )
+    elif args.platform in MAC_PLATFORMS:
+        errors.extend(
+            _validate_macos_package(args.zip_path, args.version, args.previous_package)
+        )
 
     if errors:
         print("Validacion fallida:")
@@ -235,8 +361,9 @@ def main() -> int:
         return 1
 
     print(f"OK: {args.zip_path} listo para revision de Store.")
-    print(f"Install command: {STORE_INSTALL_COMMAND}")
-    print(f"Uninstall command: {STORE_UNINSTALL_COMMAND}")
+    if args.platform == "win-x64":
+        print(f"Install command: {STORE_INSTALL_COMMAND}")
+        print(f"Uninstall command: {STORE_UNINSTALL_COMMAND}")
     return 0
 
 

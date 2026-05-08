@@ -10,6 +10,9 @@ proyectos usados para compilar los artefactos de la version anterior.
 - Version: `2.2.6`
 - Plataforma Store: Windows x64 / Win32
 - Paquete esperado: `SaludVisual-2.2.6-win-x64.zip`
+- Paquetes macOS esperados:
+  - `SaludVisual-2.2.6-mac-osx-arm64.zip`
+  - `SaludVisual-2.2.6-mac-osx-x64.zip`
 - Instalador recomendado: `InstalarSaludVisual.exe`
 - Comando de instalacion silenciosa: `InstalarSaludVisual.exe /silent`
 - Comando de desinstalacion silenciosa: `DesinstalarSaludVisual.exe /silent`
@@ -30,6 +33,27 @@ Archivos opcionales pero recomendados:
 
 - `salud-visual.ico`
 - `Instalar-SaludVisual-v2-SinAdmin.cmd`
+
+## Contenido requerido del ZIP macOS
+
+Cada ZIP macOS debe incluir, como minimo:
+
+- `SaludVisual.app/Contents/Info.plist`
+- `SaludVisual.app/Contents/MacOS/SaludVisual`
+- `SaludVisual.app/Contents/Resources/activation-config.json`
+- `VERSION.txt`
+- `README.txt`
+- `LICENSE-ACTIVATION.txt`
+
+La paridad con Windows exige que macOS incluya la misma politica comercial:
+
+- `productUrl`: web oficial propia de Salud Visual.
+- `licenseApiUrl`: endpoint de activacion.
+- `licenseMode`: `per-installation`.
+
+El fichero `activation-config.json` viaja dentro del bundle para que la app Mac
+pueda resolver la web oficial y activar una licencia independiente por cada
+instalacion. No se debe reutilizar una activacion de Windows para macOS.
 
 ## Flujo correcto para publicar 2.2.6
 
@@ -117,6 +141,74 @@ El objetivo no es reutilizar el ZIP `2.2.5`; hay que recompilar una build real
 9. Completar el cuestionario de Microsoft Store con
    `STORE_QUESTIONNAIRE_2.2.6.md`.
 
+## Flujo macOS con web propia y licencia por instalacion
+
+El codigo fuente de macOS no esta en este checkout, asi que estos scripts deben
+ejecutarse desde el checkout real de la aplicacion o indicando `--source-root`.
+La web y el endpoint de licencias se pasan de forma explicita para evitar
+paquetes Mac sin activacion.
+
+1. Generar staging para Apple Silicon:
+
+   ```bash
+   SALUD_VISUAL_PRODUCT_URL="https://TU-WEB-SALUD-VISUAL" \
+   SALUD_VISUAL_LICENSE_API_URL="https://TU-API-LICENCIAS/activate" \
+   ./scripts/build_macos_release.sh \
+     --source-root . \
+     --version 2.2.6 \
+     --platform mac-osx-arm64
+   ```
+
+2. Generar staging para Intel:
+
+   ```bash
+   SALUD_VISUAL_PRODUCT_URL="https://TU-WEB-SALUD-VISUAL" \
+   SALUD_VISUAL_LICENSE_API_URL="https://TU-API-LICENCIAS/activate" \
+   ./scripts/build_macos_release.sh \
+     --source-root . \
+     --version 2.2.6 \
+     --platform mac-osx-x64
+   ```
+
+3. Firmar y notarizar `SaludVisual.app` en cada staging con Developer ID
+   Application. Si el empaquetado debe fallar cuando no haya firma valida, usar
+   `--require-signature` en el paso siguiente.
+
+4. Empaquetar Apple Silicon:
+
+   ```bash
+   ./scripts/package_macos_release.sh \
+     --version 2.2.6 \
+     --platform mac-osx-arm64 \
+     --require-signature
+   ```
+
+5. Empaquetar Intel:
+
+   ```bash
+   ./scripts/package_macos_release.sh \
+     --version 2.2.6 \
+     --platform mac-osx-x64 \
+     --require-signature
+   ```
+
+6. Validar ambos ZIP contra `2.2.5`:
+
+   ```bash
+   python3 scripts/validate_store_package.py \
+     artifacts/v2.2.6/SaludVisual-2.2.6-mac-osx-arm64.zip \
+     --platform mac-osx-arm64 \
+     --previous-package artifacts/v2.2.5/SaludVisual-2.2.5-mac-osx-arm64.zip
+
+   python3 scripts/validate_store_package.py \
+     artifacts/v2.2.6/SaludVisual-2.2.6-mac-osx-x64.zip \
+     --platform mac-osx-x64 \
+     --previous-package artifacts/v2.2.5/SaludVisual-2.2.5-mac-osx-x64.zip
+   ```
+
+7. Publicar cada ZIP en Azure con `scripts/publish_azure_release.ps1`, usando el
+   `PackagePath` correspondiente.
+
 ## Importante: no reutilizar binarios 2.2.5
 
 El paquete `v2.2.5` publicado en GitHub contiene ejecutables firmados con
@@ -158,6 +250,8 @@ Al preparar esta rama se confirmo que:
 - El release `v2.2.5` existe en GitHub con artefactos Windows y macOS.
 - Los ejecutables Windows de `v2.2.5` estan firmados y contienen version
   embebida `2.2.5.0`; no deben reutilizarse para `2.2.6`.
+- Los paquetes macOS `2.2.6` deben reconstruirse por arquitectura y deben
+  incluir `activation-config.json` con web oficial y licencia por instalacion.
 - No hay artefactos publicos `2.2.6` en el contenedor Azure usado por releases
   previos.
 - Este repositorio no contiene los proyectos `.csproj` necesarios para recompilar
