@@ -62,15 +62,15 @@ for required in \
   fi
 done
 
-if ! grep -q "\"licenseMode\": \"per-installation\"" "$CONFIG_PATH"; then
+if ! grep -Eq '"licenseMode"[[:space:]]*:[[:space:]]*"per-installation"' "$CONFIG_PATH"; then
   echo "activation-config.json must set licenseMode=per-installation" >&2
   exit 1
 fi
-if ! grep -q "\"productUrl\"" "$CONFIG_PATH"; then
+if ! grep -q '"productUrl"' "$CONFIG_PATH"; then
   echo "activation-config.json must include productUrl" >&2
   exit 1
 fi
-if ! grep -q "\"licenseApiUrl\"" "$CONFIG_PATH"; then
+if ! grep -q '"licenseApiUrl"' "$CONFIG_PATH"; then
   echo "activation-config.json must include licenseApiUrl" >&2
   exit 1
 fi
