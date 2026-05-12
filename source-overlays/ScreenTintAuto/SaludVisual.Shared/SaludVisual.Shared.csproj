@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>SaludVisual.Shared</RootNamespace>
+    <AssemblyName>SaludVisual.Shared</AssemblyName>
+    <Version>2.2.8</Version>
+    <InformationalVersion>2.2.8</InformationalVersion>
+  </PropertyGroup>
+
+</Project>
