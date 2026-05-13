@@ -81,7 +81,7 @@ web-public/
 
 Opcion preferida si se quiere mantener .NET:
 
-- .NET MAUI para iOS
+- .NET MAUI para iOS (`net10.0-ios` en el Mac actual con Xcode 26)
 - Requiere Mac con Xcode para compilar/publicar
 - Permite compartir cliente de licencias con Windows/Mac si se extrae a
   `SaludVisual.Shared`

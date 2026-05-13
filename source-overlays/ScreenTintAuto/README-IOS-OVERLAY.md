@@ -47,7 +47,7 @@ La app iOS debe compilarse en Mac con Xcode:
 
 ```bash
 dotnet workload restore SaludVisual.iOS/SaludVisual.iOS.csproj
-dotnet build SaludVisual.iOS/SaludVisual.iOS.csproj -f net8.0-ios
+dotnet build SaludVisual.iOS/SaludVisual.iOS.csproj -f net10.0-ios
 ```
 
 ## Limitacion iOS
