@@ -55,3 +55,23 @@ dotnet build SaludVisual.iOS/SaludVisual.iOS.csproj -f net8.0-ios
 iOS no permite overlays globales de terceros sobre otras apps. Por eso esta app
 usa un flujo compatible con App Store: activar licencia, guiar filtros nativos de
 iOS y ayudar a crear automatizaciones en Atajos.
+
+## Reconstruir macOS correctamente
+
+Tambien se incluye `scripts/reconstruir-saludvisual-macos.sh` para regenerar los
+paquetes macOS con carpetas `.app` reales. Evita el error visto en paquetes con
+rutas Windows tipo `SaludVisual.app\Contents\...`.
+
+En el Mac:
+
+```bash
+cd /ruta/a/ScreenTintAuto
+chmod +x scripts/reconstruir-saludvisual-macos.sh
+VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh arm64
+```
+
+Para ambas arquitecturas:
+
+```bash
+VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh all
+```
