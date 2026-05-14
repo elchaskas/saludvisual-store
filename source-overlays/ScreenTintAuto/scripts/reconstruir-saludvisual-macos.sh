@@ -5,6 +5,12 @@ VERSION="${VERSION:-2.2.8}"
 CONFIGURATION="${CONFIGURATION:-Release}"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ARTIFACT_ROOT="$ROOT_DIR/artifacts/v$VERSION"
+MACOS_SIGN_IDENTITY="${MACOS_SIGN_IDENTITY:-}"
+MACOS_NOTARY_PROFILE="${MACOS_NOTARY_PROFILE:-}"
+MACOS_NOTARY_APPLE_ID="${MACOS_NOTARY_APPLE_ID:-}"
+MACOS_NOTARY_TEAM_ID="${MACOS_NOTARY_TEAM_ID:-}"
+MACOS_NOTARY_PASSWORD="${MACOS_NOTARY_PASSWORD:-}"
+MACOS_SKIP_NOTARY="${MACOS_SKIP_NOTARY:-0}"
 
 usage() {
   cat <<'USAGE'
@@ -16,9 +22,19 @@ Uso:
 Variables:
   VERSION=2.2.8
   CONFIGURATION=Release
+  MACOS_SIGN_IDENTITY="Developer ID Application: ..."
+  MACOS_NOTARY_PROFILE=saludvisual-notary
+  # O, sin perfil guardado:
+  MACOS_NOTARY_APPLE_ID=...
+  MACOS_NOTARY_TEAM_ID=...
+  MACOS_NOTARY_PASSWORD=...
+  MACOS_SKIP_NOTARY=1  # solo pruebas locales; no usar para publicar
 
 Ejemplos:
   VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh arm64
+  MACOS_SIGN_IDENTITY="Developer ID Application: Eric Sanchez Linares (...)" \
+    MACOS_NOTARY_PROFILE=saludvisual-notary \
+    VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh all
   VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh all
 USAGE
 }
@@ -36,6 +52,14 @@ require_file() {
   local path="$1"
   if [[ ! -e "$path" ]]; then
     echo "Falta archivo requerido: $path" >&2
+    exit 1
+  fi
+}
+
+require_command() {
+  local command_name="$1"
+  if ! command -v "$command_name" >/dev/null 2>&1; then
+    echo "Falta comando requerido: $command_name" >&2
     exit 1
   fi
 }
@@ -107,6 +131,71 @@ stage_app() {
   mkdir -p "$staging_dir"
 }
 
+sign_app() {
+  local app_dir="$1"
+  if [[ -z "$MACOS_SIGN_IDENTITY" ]]; then
+    echo "Aviso: MACOS_SIGN_IDENTITY no definido; $app_dir queda sin firmar." >&2
+    return
+  fi
+
+  echo "Firmando: $app_dir"
+  codesign \
+    --deep \
+    --force \
+    --options runtime \
+    --timestamp \
+    --sign "$MACOS_SIGN_IDENTITY" \
+    "$app_dir"
+
+  codesign --verify --deep --strict --verbose=2 "$app_dir"
+}
+
+notary_submit_args() {
+  if [[ -n "$MACOS_NOTARY_PROFILE" ]]; then
+    printf '%s\n' "--keychain-profile" "$MACOS_NOTARY_PROFILE"
+    return
+  fi
+
+  if [[ -n "$MACOS_NOTARY_APPLE_ID" && -n "$MACOS_NOTARY_TEAM_ID" && -n "$MACOS_NOTARY_PASSWORD" ]]; then
+    printf '%s\n' "--apple-id" "$MACOS_NOTARY_APPLE_ID" "--team-id" "$MACOS_NOTARY_TEAM_ID" "--password" "$MACOS_NOTARY_PASSWORD"
+    return
+  fi
+
+  return 1
+}
+
+notarize_package() {
+  local package_path="$1"
+  local staging_root="$2"
+
+  if [[ -z "$MACOS_SIGN_IDENTITY" ]]; then
+    echo "Aviso: no se puede notarizar sin firmar primero con Developer ID." >&2
+    return
+  fi
+
+  if [[ "$MACOS_SKIP_NOTARY" == "1" ]]; then
+    echo "Aviso: notarizacion omitida por MACOS_SKIP_NOTARY=1." >&2
+    return
+  fi
+
+  if ! args="$(notary_submit_args)"; then
+    echo "Aviso: credenciales de notarizacion no configuradas; paquete no notarizado." >&2
+    echo "Define MACOS_NOTARY_PROFILE o MACOS_NOTARY_APPLE_ID/MACOS_NOTARY_TEAM_ID/MACOS_NOTARY_PASSWORD." >&2
+    return
+  fi
+
+  echo "Notarizando: $package_path"
+  # shellcheck disable=SC2086
+  xcrun notarytool submit "$package_path" $args --wait
+
+  echo "Aplicando staple a bundles .app..."
+  find "$staging_root" -maxdepth 1 -type d -name "*.app" -print0 |
+    while IFS= read -r -d '' app_dir; do
+      xcrun stapler staple "$app_dir"
+      spctl -a -vvv -t exec "$app_dir"
+    done
+}
+
 build_platform() {
   local platform_runtime="$1"
   local platform="${platform_runtime%%:*}"
@@ -153,6 +242,9 @@ build_platform() {
     "Instalar Salud Visual" \
     "shop.saludvisual.mac.installer"
 
+  sign_app "$staging_root/SaludVisual.app"
+  sign_app "$staging_root/InstalarSaludVisual.app"
+
   cat > "$staging_root/LEEME-macOS.txt" <<README
 Salud Visual v$VERSION para macOS
 
@@ -172,6 +264,16 @@ README
     (cd "$staging_root" && zip -qry "$package_path" .)
   fi
 
+  notarize_package "$package_path" "$staging_root"
+
+  # Si se ha stapled tras notarizar, recreamos el ZIP final para incluir tickets.
+  if [[ "$MACOS_SKIP_NOTARY" != "1" ]] && [[ -n "$MACOS_SIGN_IDENTITY" ]]; then
+    if [[ -n "$MACOS_NOTARY_PROFILE" || ( -n "$MACOS_NOTARY_APPLE_ID" && -n "$MACOS_NOTARY_TEAM_ID" && -n "$MACOS_NOTARY_PASSWORD" ) ]]; then
+      rm -f "$package_path"
+      (cd "$staging_root" && ditto -c -k --sequesterRsrc --keepParent . "$package_path")
+    fi
+  fi
+
   echo "Paquete listo: $package_path"
   echo "Comprobando bundles reales:"
   find "$staging_root" -maxdepth 2 -type d -name "*.app" -print
@@ -179,6 +281,9 @@ README
 
 require_file "$ROOT_DIR/SaludVisual.Mac/SaludVisual.Mac.csproj"
 require_file "$ROOT_DIR/SaludVisual.MacInstaller/SaludVisual.MacInstaller.csproj"
+require_command dotnet
+require_command codesign
+require_command xcrun
 
 for platform_runtime in "${PLATFORMS[@]}"; do
   build_platform "$platform_runtime"

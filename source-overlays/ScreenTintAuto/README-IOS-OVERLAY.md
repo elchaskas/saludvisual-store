@@ -75,3 +75,33 @@ Para ambas arquitecturas:
 ```bash
 VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh all
 ```
+
+Para publicar desde la web a clientes finales, firma y notariza:
+
+```bash
+cd /ruta/a/ScreenTintAuto
+
+MACOS_SIGN_IDENTITY="Developer ID Application: Eric Sanchez Linares (...)" \
+MACOS_NOTARY_PROFILE=saludvisual-notary \
+VERSION=2.2.8 \
+scripts/reconstruir-saludvisual-macos.sh all
+```
+
+El perfil `saludvisual-notary` se crea una vez en el llavero del Mac:
+
+```bash
+xcrun notarytool store-credentials saludvisual-notary \
+  --apple-id "TU_APPLE_ID" \
+  --team-id "TU_TEAM_ID" \
+  --password "APP_SPECIFIC_PASSWORD"
+```
+
+El script:
+
+1. crea bundles `.app` reales,
+2. firma con Developer ID,
+3. verifica `codesign`,
+4. notariza el ZIP,
+5. aplica `stapler` a las apps,
+6. verifica con `spctl`,
+7. recrea el ZIP final con los tickets stapled.
