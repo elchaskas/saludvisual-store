@@ -89,6 +89,8 @@ write_info_plist() {
   <string>$VERSION</string>
   <key>CFBundleIconFile</key>
   <string>Icon</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
   <key>LSMinimumSystemVersion</key>
   <string>12.0</string>
 </dict>
@@ -192,7 +194,7 @@ notarize_package() {
   find "$staging_root" -maxdepth 1 -type d -name "*.app" -print0 |
     while IFS= read -r -d '' app_dir; do
       xcrun stapler staple "$app_dir"
-      spctl -a -vvv -t exec "$app_dir"
+      spctl -a -vvv -t open --context context:primary-signature "$app_dir"
     done
 }
 
