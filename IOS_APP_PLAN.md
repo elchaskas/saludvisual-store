@@ -6,8 +6,8 @@ iPhone usa iOS/iPadOS, empaquetado `.ipa` y reglas de sandbox distintas.
 
 ## Objetivo
 
-Crear una app iPhone que acompañe a la version Windows ya vendida en la web
-propia de Salud Visual:
+Crear una app iPhone premium que acompañe a la version 3.0 de Salud Visual,
+vendida en la web propia y preparada para App Store:
 
 - Web oficial: `https://saludvisual.shop`
 - API de licencias: `https://api.saludvisual.shop`
@@ -127,14 +127,14 @@ el backend y las apps existentes son .NET.
 
 ## Versionado
 
-Windows esta actualmente en `2.2.8`. iPhone debe arrancar como:
+La version premium multi-tienda debe arrancar como:
 
 ```text
-2.2.8
+3.0.0
 ```
 
-para mantener paridad comercial con web/API, aunque la funcionalidad sea propia
-de iOS.
+para mantener paridad comercial entre Windows, macOS, iPhone y Android, aunque
+la funcionalidad de filtros sea propia de cada sistema.
 
 ## Pantallas iniciales
 
@@ -181,5 +181,5 @@ de iOS.
 - La app valida la licencia al arrancar.
 - El usuario puede configurar filtros nativos siguiendo la guia.
 - La app no afirma aplicar overlays globales en iOS.
-- Version visible: `2.2.8`.
+- Version visible: `3.0.0`.
 - Enlaces de compra/soporte apuntan a `https://saludvisual.shop`.

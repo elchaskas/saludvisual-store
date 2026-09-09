@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="${VERSION:-2.2.8}"
+VERSION="${VERSION:-3.0.0}"
 CONFIGURATION="${CONFIGURATION:-Release}"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ARTIFACT_ROOT="$ROOT_DIR/artifacts/v$VERSION"
@@ -20,7 +20,7 @@ Uso:
   scripts/reconstruir-saludvisual-macos.sh [arm64|x64|all]
 
 Variables:
-  VERSION=2.2.8
+  VERSION=3.0.0
   CONFIGURATION=Release
   MACOS_SIGN_IDENTITY="Developer ID Application: ..."
   MACOS_NOTARY_PROFILE=saludvisual-notary
@@ -31,11 +31,11 @@ Variables:
   MACOS_SKIP_NOTARY=1  # solo pruebas locales; no usar para publicar
 
 Ejemplos:
-  VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh arm64
+  VERSION=3.0.0 scripts/reconstruir-saludvisual-macos.sh arm64
   MACOS_SIGN_IDENTITY="Developer ID Application: Eric Sanchez Linares (...)" \
     MACOS_NOTARY_PROFILE=saludvisual-notary \
-    VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh all
-  VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh all
+    VERSION=3.0.0 scripts/reconstruir-saludvisual-macos.sh all
+  VERSION=3.0.0 scripts/reconstruir-saludvisual-macos.sh all
 USAGE
 }
 

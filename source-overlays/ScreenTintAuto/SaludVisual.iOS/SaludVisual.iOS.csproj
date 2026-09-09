@@ -10,13 +10,14 @@
     <Nullable>enable</Nullable>
     <ApplicationTitle>Salud Visual</ApplicationTitle>
     <ApplicationId>shop.saludvisual.ios</ApplicationId>
-    <ApplicationDisplayVersion>2.2.8</ApplicationDisplayVersion>
-    <ApplicationVersion>228</ApplicationVersion>
+    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+    <ApplicationVersion>300</ApplicationVersion>
     <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SaludVisual.Shared\SaludVisual.Shared.csproj" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
   </ItemGroup>
 
   <ItemGroup>
