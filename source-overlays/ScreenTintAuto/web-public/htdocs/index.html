@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Salud Visual 3.0 Premium | Protege tu vista en todas tus pantallas</title>
+  <meta name="description" content="Salud Visual 3.0 Premium: filtros visuales inteligentes, licencia por dispositivo, demo interactiva y descargas oficiales para Windows, macOS, iPhone y Android.">
+  <meta name="theme-color" content="#170d05">
+  <link rel="canonical" href="https://saludvisual.shop/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://saludvisual.shop/">
+  <meta property="og:title" content="Salud Visual 3.0 Premium">
+  <meta property="og:description" content="Prueba filtros visuales en directo y descarga Salud Visual 3.0 Premium para tus pantallas.">
+  <meta property="og:image" content="https://saludvisual.shop/assets/saludvisual-store-logo-1080x1080-final.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="./assets/saludvisual-app-icon-shield-final.png" type="image/png">
+  <link rel="dns-prefetch" href="https://stsaludvisual73023.blob.core.windows.net">
+  <link rel="preconnect" href="https://stsaludvisual73023.blob.core.windows.net">
+  <link rel="dns-prefetch" href="https://buy.stripe.com">
+  <link rel="preconnect" href="https://buy.stripe.com">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Salud Visual",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Windows 10+, macOS, iOS, Android",
+    "softwareVersion": "3.0.0",
+    "description": "Filtro visual premium para reducir fatiga ocular y guiar rutinas de descanso en todas tus pantallas.",
+    "offers": {
+      "@type": "Offer",
+      "price": "2.99",
+      "priceCurrency": "EUR",
+      "url": "https://saludvisual.shop/#comprar",
+      "availability": "https://schema.org/InStock"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Eric Sanchez Linares"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #120b05;
+      --bg-2: #241205;
+      --text: #fff7e6;
+      --muted: #dcc28f;
+      --muted-2: #b99559;
+      --gold: #f6c55c;
+      --gold-2: #ffe8a3;
+      --amber: #f39a35;
+      --terra: #9f512d;
+      --red: #8c2f22;
+      --green: #7ee0aa;
+      --card: rgba(255, 246, 226, 0.095);
+      --card-2: rgba(255, 246, 226, 0.16);
+      --border: rgba(255, 215, 132, 0.22);
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+      --radius: 28px;
+      --filter-color: rgba(255, 196, 64, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      color-scheme: dark;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(246, 197, 92, 0.32), transparent 34%),
+        radial-gradient(circle at 86% 10%, rgba(159, 81, 45, 0.36), transparent 32%),
+        radial-gradient(circle at 50% 92%, rgba(243, 154, 53, 0.24), transparent 46%),
+        linear-gradient(155deg, var(--bg) 0%, var(--bg-2) 48%, #32170b 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 232, 163, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 232, 163, 0.025) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(to bottom, black 0%, transparent 88%);
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 24px 0 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      box-shadow: 0 18px 34px rgba(246, 197, 92, 0.22);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.92rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .nav a { border-bottom: 1px solid rgba(255, 232, 163, 0.24); }
+    .nav a:hover { color: var(--gold-2); border-color: var(--gold); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--gold-2);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      backdrop-filter: blur(14px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 44px;
+      align-items: center;
+      padding: 62px 0 88px;
+    }
+
+    h1 {
+      margin: 20px 0 18px;
+      font-size: clamp(44px, 7vw, 88px);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+    }
+
+    .gold-text {
+      background: linear-gradient(135deg, #fff6c8, var(--gold), var(--amber));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 66ch;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.58;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-weight: 900;
+      transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); filter: brightness(1.05); }
+
+    .button.primary {
+      color: #241205;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold), var(--amber));
+      box-shadow: 0 18px 50px rgba(243, 154, 53, 0.34);
+    }
+
+    .button.secondary {
+      color: var(--gold-2);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stage {
+      min-height: 640px;
+      position: relative;
+    }
+
+    .halo {
+      position: absolute;
+      inset: 30px -20px auto -20px;
+      height: 430px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(246, 197, 92, 0.38), transparent 64%);
+      filter: blur(18px);
+    }
+
+    .device {
+      position: relative;
+      width: min(430px, 100%);
+      margin: 0 auto;
+      padding: 18px;
+      border-radius: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: linear-gradient(155deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .screen {
+      position: relative;
+      min-height: 540px;
+      overflow: hidden;
+      border-radius: 30px;
+      padding: 24px;
+      color: #241205;
+      background:
+        linear-gradient(160deg, #fffaf0 0 48%, #f2f6ff 49% 62%, #2c170b 63% 100%);
+    }
+
+    .screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: var(--filter-color);
+      mix-blend-mode: multiply;
+      transition: background 0.35s ease;
+    }
+
+    .preview-card {
+      position: relative;
+      z-index: 1;
+      margin-top: 270px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.75);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.18);
+    }
+
+    .preview-card strong { display: block; font-size: 22px; margin-bottom: 6px; }
+    .preview-card p { margin: 0; color: #6e4a20; }
+
+    .filter-panel {
+      position: relative;
+      z-index: 3;
+      margin: -58px auto 0;
+      width: min(610px, 100%);
+      padding: 18px;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: rgba(36, 18, 5, 0.78);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.33);
+      backdrop-filter: blur(18px);
+    }
+
+    .filter-panel h2 { margin: 0 0 12px; font-size: 22px; letter-spacing: -0.03em; }
+
+    .filter-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .filter-button {
+      min-height: 70px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+      font-weight: 900;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .filter-button:hover,
+    .filter-button.active {
+      transform: translateY(-2px);
+      border-color: rgba(255, 232, 163, 0.9);
+      background: rgba(246, 197, 92, 0.2);
+    }
+
+    .section { padding: 76px 0; }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .section-lead { max-width: 68ch; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+    .download-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      background: var(--card);
+      box-shadow: 0 18px 64px rgba(0,0,0,0.22);
+      backdrop-filter: blur(18px);
+    }
+
+    .card h3 { margin: 0 0 10px; font-size: 22px; }
+    .card p { color: var(--muted); margin: 0; }
+
+    .download-card {
+      display: flex;
+      min-height: 220px;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 20px;
+      background: linear-gradient(150deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06));
+    }
+
+    .download-card small { color: var(--muted-2); }
+
+    .warning {
+      margin-top: 24px;
+      padding: 16px 18px;
+      border: 1px solid rgba(246, 197, 92, 0.45);
+      border-radius: 18px;
+      background: rgba(246, 197, 92, 0.11);
+      color: #ffe8a3;
+    }
+
+    .footer {
+      padding: 42px 0 54px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer a { color: var(--gold-2); border-bottom: 1px solid rgba(255,232,163,0.32); }
+
+    @media (max-width: 920px) {
+      .hero, .grid, .download-grid { grid-template-columns: 1fr; }
+      .stage { min-height: auto; }
+      .filter-buttons { grid-template-columns: repeat(2, 1fr); }
+      .nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="#">
+      <img src="./assets/saludvisual-app-icon-shield-final.png" alt="" width="48" height="48" decoding="async">
+      <span>Salud Visual <span class="gold-text">3.0</span></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#demo">Probar filtros</a>
+      <a href="#premium">Premium</a>
+      <a href="#descargas">Descargas</a>
+      <a href="./soporte.html">Soporte</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="container hero">
+      <div>
+        <span class="pill">Version 3.0 premium · Windows · macOS · iPhone · Android</span>
+        <h1>Prueba el filtro antes de <span class="gold-text">descargarlo.</span></h1>
+        <p class="lead">
+          Salud Visual 3.0 convierte la proteccion visual en una experiencia premium: filtros calidos, licencia por dispositivo y una demo interactiva para encontrar tu tono ideal.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#demo">Probar filtros</a>
+          <a class="button secondary" href="#comprar">Comprar licencia</a>
+        </div>
+      </div>
+
+      <div class="stage" id="demo">
+        <div class="halo"></div>
+        <div class="device">
+          <div class="screen" id="filterPreview">
+            <div class="preview-card">
+              <strong id="filterName">Dorado suave</strong>
+              <p id="filterDescription">Tono calido para lectura, trabajo y tardes largas frente a la pantalla.</p>
+            </div>
+          </div>
+        </div>
+        <div class="filter-panel">
+          <h2>Boton demo: elige un filtro</h2>
+          <div class="filter-buttons" role="group" aria-label="Filtros de demostracion">
+            <button class="filter-button active" data-filter="gold">Dorado</button>
+            <button class="filter-button" data-filter="amber">Ambar</button>
+            <button class="filter-button" data-filter="sunset">Atardecer</button>
+            <button class="filter-button" data-filter="night">Noche</button>
+            <button class="filter-button" data-filter="focus">Focus</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section" id="premium">
+      <span class="pill">Mas sorprendente. Mas claro. Mas vendible.</span>
+      <h2>Una experiencia visual que se entiende en segundos.</h2>
+      <p class="lead section-lead">La web 3.0 no solo explica Salud Visual: deja que el cliente sienta el cambio, pruebe intensidades y descargue la version correcta.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Demo interactiva</h3>
+          <p>El cliente compara tonos y entiende por que un filtro calido reduce la agresividad del blanco y azul.</p>
+        </article>
+        <article class="card">
+          <h3>Licencia premium</h3>
+          <p>Activacion clara contra la API oficial y una experiencia coherente en escritorio y movil.</p>
+        </article>
+        <article class="card">
+          <h3>Multi-tienda</h3>
+          <p>Preparada para Microsoft Store, App Store, Google Play y descarga directa desde la web.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section" id="descargas">
+      <span class="pill">Descargas oficiales 3.0</span>
+      <h2>Una sola marca para todas tus pantallas.</h2>
+      <div class="download-grid">
+        <article class="download-card">
+          <div>
+            <h3>Windows</h3>
+            <p>Instalador premium para PC.</p>
+            <small>Microsoft Store / descarga directa</small>
+          </div>
+          <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/InstalarSaludVisual-3.0.0.exe" target="_blank" rel="noopener">Descargar Windows</a>
+        </article>
+        <article class="download-card">
+          <div>
+            <h3>macOS</h3>
+            <p>ZIP firmado y notarizado para Apple Silicon e Intel.</p>
+            <small>Gatekeeper compatible</small>
+          </div>
+          <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-mac-osx-arm64.zip" target="_blank" rel="noopener">Mac Apple Silicon</a>
+        </article>
+        <article class="download-card">
+          <div>
+            <h3>iPhone</h3>
+            <p>Asistente iOS con guias para filtros nativos y Atajos.</p>
+            <small>App Store</small>
+          </div>
+          <a class="button secondary" href="#comprar">Proximamente</a>
+        </article>
+        <article class="download-card">
+          <div>
+            <h3>Android</h3>
+            <p>Build universal y version adaptada para HyperOS.</p>
+            <small>Google Play / APK</small>
+          </div>
+          <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-android-universal.apk" target="_blank" rel="noopener">Descargar Android</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section card" id="comprar">
+      <span class="pill">Oferta premium de lanzamiento</span>
+      <h2>Compra una licencia y activa Salud Visual 3.0.</h2>
+      <p class="lead">Pago seguro con Stripe. La clave llega al correo del pago y se usa en la ventana de activacion de la app.</p>
+      <div class="actions">
+        <a class="button primary" href="https://buy.stripe.com/5kQ7sL6SwacIdu02ASfQI00" target="_blank" rel="noopener">Comprar con Stripe</a>
+        <a class="button secondary" href="./soporte.html">Necesito soporte</a>
+      </div>
+      <div class="warning">
+        Tras pagar, revisa tu correo y spam. Si la clave no llega, escribe a <strong>soporte@saludvisual.shop</strong>.
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <span>Publicador: Eric Sanchez Linares · Salud Visual 3.0</span>
+    <span><a href="./privacidad.html">Privacidad</a> · <a href="./soporte.html">Soporte</a> · <a href="./sitemap.xml">Mapa del sitio</a></span>
+  </footer>
+
+  <script>
+    const filters = {
+      gold: { color: 'rgba(255, 196, 64, 0.30)', name: 'Dorado suave', description: 'Tono calido para lectura, trabajo y tardes largas frente a la pantalla.' },
+      amber: { color: 'rgba(255, 150, 36, 0.38)', name: 'Ambar protector', description: 'Mas presencia calida para reducir brillo frio y crear sensacion de descanso.' },
+      sunset: { color: 'rgba(226, 92, 32, 0.36)', name: 'Atardecer', description: 'Filtro envolvente para ultimas horas del dia y transicion hacia la noche.' },
+      night: { color: 'rgba(160, 42, 24, 0.48)', name: 'Noche profunda', description: 'Tono rojizo mas intenso para reducir luz fria antes de dormir.' },
+      focus: { color: 'rgba(255, 214, 96, 0.18)', name: 'Focus premium', description: 'Ligero, elegante y discreto para trabajar con menos fatiga sin perder claridad.' }
+    };
+
+    const preview = document.getElementById('filterPreview');
+    const nameEl = document.getElementById('filterName');
+    const descriptionEl = document.getElementById('filterDescription');
+
+    document.querySelectorAll('.filter-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const filter = filters[button.dataset.filter];
+        preview.style.setProperty('--filter-color', filter.color);
+        nameEl.textContent = filter.name;
+        descriptionEl.textContent = filter.description;
+        document.querySelectorAll('.filter-button').forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

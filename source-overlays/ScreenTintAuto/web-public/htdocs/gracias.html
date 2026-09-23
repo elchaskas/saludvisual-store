@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gracias por tu compra - Salud Visual</title>
+  <meta name="description" content="Gracias por comprar Salud Visual. Descargas oficiales Windows, macOS, iOS y Android.">
+  <link rel="icon" href="./assets/saludvisual-app-icon-shield-final.png" type="image/png">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Segoe UI, Arial, sans-serif;
+      color: #ecf3ff;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(142, 99, 255, 0.3), transparent 35%),
+        linear-gradient(165deg, #0b0622 0%, #110a31 46%, #080617 100%);
+      padding: 1rem;
+    }
+    .card {
+      max-width: 760px;
+      background: rgba(20, 31, 65, 0.75);
+      border: 1px solid rgba(130, 158, 255, 0.24);
+      border-radius: 18px;
+      padding: 1.4rem;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
+    }
+    h1 { margin-top: 0; margin-bottom: 0.5rem; }
+    p { line-height: 1.5; color: #d2def7; }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+
+    .mac-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .mac-btns .btn {
+      flex: 1 1 140px;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 0.72rem 1rem;
+      color: #2d1a00;
+      background: linear-gradient(120deg, #ffe08a, #ffc14d 55%, #d99818);
+    }
+    .btn.alt {
+      color: #ecf3ff;
+      background: rgba(17, 33, 71, 0.75);
+      border: 1px solid rgba(130, 158, 255, 0.24);
+    }
+    code {
+      background: rgba(8, 8, 18, 0.7);
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Gracias por tu compra</h1>
+    <p>Tu pago se ha registrado correctamente.</p>
+    <p>Tu clave de licencia <strong>(formato SV-…)</strong> se enviará por correo al email que proporcionaste en el pago. Si no llega en unos minutos, revisa la carpeta de spam y contacta con <strong>soporte@saludvisual.shop</strong>.</p>
+    <p>Cuando tengas la clave, descarga el instalador que corresponda a tu sistema (Windows, Android o Mac) y pégala en la ventana de activación cuando la solicite la app.</p>
+    <div class="actions">
+      <a class="btn" href="https://stsaludvisual73023.blob.core.windows.net/releases/InstalarSaludVisual-3.0.0.exe">Windows (.exe)</a>
+      <div class="mac-btns" role="group" aria-label="Descargas Android">
+        <a class="btn" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-android-universal.apk">Android universal</a>
+        <a class="btn" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-android-hyperos.apk">Xiaomi/Redmi HyperOS</a>
+      </div>
+      <div class="mac-btns" role="group" aria-label="Descargas macOS">
+        <a class="btn" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-mac-osx-arm64.zip">macOS Apple Silicon</a>
+        <a class="btn" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-mac-osx-x64.zip">macOS Intel</a>
+      </div>
+      <a class="btn alt" href="./index.html">Volver a la web</a>
+    </div>
+    <p>
+      Si tienes cualquier problema, escríbenos a <strong>soporte@saludvisual.shop</strong> o revisa
+      <a href="./soporte.html" style="color:#cde1ff;">soporte técnico</a>.
+    </p>
+    <p class="top" style="margin-top:1rem;"><a href="./index.html">Inicio</a> · <a href="./privacidad.html">Privacidad</a> · <a href="./soporte.html">Soporte</a></p>
+  </main>
+</body>
+</html>
