@@ -1,0 +1,33 @@
+SUBIR ESTO A IONOS (raiz del dominio saludvisual.shop)
+
+1) En Windows PowerShell:
+
+$dest = "D:\ScreenTintAuto\web-upload"
+Remove-Item $dest -Recurse -Force -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Path $dest | Out-Null
+Invoke-WebRequest -Uri "https://github.com/elchaskas/saludvisual-store/archive/refs/heads/cursor/mac-activation-parity-e403.zip" -OutFile "$env:TEMP\sv-web.zip"
+Expand-Archive -Path "$env:TEMP\sv-web.zip" -DestinationPath "$env:TEMP\sv-web" -Force
+$src = Get-ChildItem "$env:TEMP\sv-web" -Directory | Select-Object -First 1
+Copy-Item "$($src.FullName)\source-overlays\ScreenTintAuto\web-public\htdocs\*" $dest -Recurse -Force
+New-Item -ItemType Directory -Path "$dest\assets" -Force | Out-Null
+Copy-Item "$($src.FullName)\source-overlays\ScreenTintAuto\web-public\assets\*" "$dest\assets" -Recurse -Force
+explorer $dest
+
+2) En Plesk/IONOS, entra en el Document Root de saludvisual.shop
+   (normalmente httpdocs o www) y SUBE/REEMPLAZA:
+   - index.html
+   - gracias.html
+   - privacidad.html
+   - soporte.html
+   - installer-exit-codes.html
+   - robots.txt
+   - sitemap.xml
+   - carpeta assets\ completa
+
+3) Comprueba en el navegador (Ctrl+F5):
+   - Debe decir "Creado y desarrollado por Eric Sanchez Linares"
+   - Debe verse la barra "Filtro activo"
+   - NO debe decir "3.0 Premium"
+   - En el codigo HTML debe existir: data-sv-build="restore-2026-09-23-eric"
+
+IMPORTANTE: no subas la carpeta "web 3.0" antigua. Usa solo $dest de arriba.
