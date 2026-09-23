@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Salud Visual 3.0 Premium | Protege tu vista en todas tus pantallas</title>
-  <meta name="description" content="Salud Visual 3.0 Premium: filtros visuales inteligentes, licencia por dispositivo, demo interactiva y descargas oficiales para Windows, macOS, iPhone y Android.">
-  <meta name="theme-color" content="#170d05">
+  <title>Salud Visual | Protege tu vista mientras trabajas</title>
+  <meta name="description" content="Salud Visual: misma licencia para Windows, macOS y Android. Filtro inteligente contra la fatiga ocular. Compra en Stripe y descarga APK, instalador o paquetes Mac. Oferta de lanzamiento: 2,99 EUR.">
+  <meta name="theme-color" content="#0a061f">
   <link rel="canonical" href="https://saludvisual.shop/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://saludvisual.shop/">
-  <meta property="og:title" content="Salud Visual 3.0 Premium">
-  <meta property="og:description" content="Prueba filtros visuales en directo y descarga Salud Visual 3.0 Premium para tus pantallas.">
-  <meta property="og:image" content="https://saludvisual.shop/assets/saludvisual-store-logo-1080x1080-final.png">
+  <meta property="og:title" content="Salud Visual | Protege tu vista mientras trabajas">
+  <meta property="og:description" content="Misma licencia para Windows, macOS y Android. Filtro inteligente, Stripe y descargas oficiales.">
+  <meta property="og:image" content="https://saludvisual.shop/assets/saludvisual-app-icon-shield-final.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="./assets/saludvisual-app-icon-shield-final.png" type="image/png">
   <link rel="dns-prefetch" href="https://stsaludvisual73023.blob.core.windows.net">
@@ -24,9 +24,8 @@
     "@type": "SoftwareApplication",
     "name": "Salud Visual",
     "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Windows 10+, macOS, iOS, Android",
-    "softwareVersion": "3.0.0",
-    "description": "Filtro visual premium para reducir fatiga ocular y guiar rutinas de descanso en todas tus pantallas.",
+    "operatingSystem": "Windows 10+, macOS, Android",
+    "description": "Filtro de pantalla inteligente para reducir fatiga visual. Una licencia para Windows, macOS y Android.",
     "offers": {
       "@type": "Offer",
       "price": "2.99",
@@ -42,498 +41,921 @@
   </script>
   <style>
     :root {
-      --bg: #120b05;
-      --bg-2: #241205;
-      --text: #fff7e6;
-      --muted: #dcc28f;
-      --muted-2: #b99559;
-      --gold: #f6c55c;
-      --gold-2: #ffe8a3;
-      --amber: #f39a35;
-      --terra: #9f512d;
-      --red: #8c2f22;
-      --green: #7ee0aa;
-      --card: rgba(255, 246, 226, 0.095);
-      --card-2: rgba(255, 246, 226, 0.16);
-      --border: rgba(255, 215, 132, 0.22);
-      --shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
-      --radius: 28px;
-      --filter-color: rgba(255, 196, 64, 0.3);
+      --card: rgba(20, 31, 65, 0.72);
+      --text: #ecf3ff;
+      --muted: #b9c8ea;
+      --accent: #71f9c4;
+      --accent-soft: rgba(113, 249, 196, 0.12);
+      --gold-1: #ffe08a;
+      --gold-2: #ffc14d;
+      --gold-3: #d99818;
+      --border: rgba(130, 158, 255, 0.26);
+      --shadow: 0 24px 64px rgba(0, 0, 0, 0.38);
+      --warning-bg: rgba(255, 184, 0, 0.15);
+      --warning-border: rgba(255, 209, 102, 0.55);
+      --radius-card: 22px;
+      --radius-inner: 14px;
+      --page-filter: rgba(255, 196, 64, 0.18);
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .button:hover { transform: none; }
+      .download-card,
+      .checkout-card,
+      .feature,
+      .platform,
+      .filter-chip {
+        transition: none;
+      }
+      #svPageFilter { transition: none !important; }
+    }
 
     body {
       margin: 0;
       color: var(--text);
       color-scheme: dark;
       background:
-        radial-gradient(circle at 12% 8%, rgba(246, 197, 92, 0.32), transparent 34%),
-        radial-gradient(circle at 86% 10%, rgba(159, 81, 45, 0.36), transparent 32%),
-        radial-gradient(circle at 50% 92%, rgba(243, 154, 53, 0.24), transparent 46%),
-        linear-gradient(155deg, var(--bg) 0%, var(--bg-2) 48%, #32170b 100%);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        radial-gradient(circle at 12% 8%, rgba(142, 99, 255, 0.38), transparent 36%),
+        radial-gradient(circle at 88% 4%, rgba(121, 86, 255, 0.28), transparent 38%),
+        radial-gradient(circle at 50% 92%, rgba(79, 225, 255, 0.2), transparent 42%),
+        linear-gradient(168deg, #0a061f 0%, #100a2e 44%, #070615 100%);
+      font-family: system-ui, -apple-system, "Segoe UI", "Inter", sans-serif;
       line-height: 1.5;
-      overflow-x: hidden;
     }
 
-    body::before {
-      content: "";
+    #svPageFilter {
       position: fixed;
       inset: 0;
+      z-index: 9998;
       pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255, 232, 163, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 232, 163, 0.025) 1px, transparent 1px);
-      background-size: 46px 46px;
-      mask-image: linear-gradient(to bottom, black 0%, transparent 88%);
-      z-index: 0;
+      background: var(--page-filter);
+      mix-blend-mode: multiply;
+      transition: background 0.55s ease;
     }
 
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
+    .sv-filter-bar {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1rem;
+      margin: 0 0 0.85rem;
+      border: 1px solid rgba(255, 209, 102, 0.35);
+      border-radius: 16px;
+      background: rgba(12, 18, 42, 0.88);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.28);
+    }
+
+    .sv-filter-bar strong {
+      color: var(--gold-1);
+      font-size: 0.92rem;
+    }
+
+    .sv-filter-bar span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .filter-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .filter-chip {
+      border: 1px solid rgba(130, 158, 255, 0.28);
+      background: rgba(17, 33, 71, 0.8);
+      color: #e8f0ff;
+      border-radius: 999px;
+      padding: 0.38rem 0.78rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .filter-chip:hover,
+    .filter-chip.active {
+      transform: translateY(-1px);
+      border-color: rgba(255, 193, 77, 0.7);
+      background: rgba(255, 193, 77, 0.16);
+      color: #ffe8a6;
+    }
 
     .container {
-      width: min(1160px, calc(100% - 32px));
+      max-width: 1160px;
       margin: 0 auto;
-      position: relative;
-      z-index: 2;
+      padding: 1.25rem 1rem 3rem;
     }
 
     .topbar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
-      padding: 24px 0 12px;
+      margin-bottom: 1.6rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem 1rem;
+      justify-content: flex-end;
+    }
+
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.85rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .top-nav a {
+      color: #d2e4ff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(210, 228, 255, 0.35);
+    }
+
+    .top-nav a:hover {
+      color: var(--accent);
+      border-bottom-color: rgba(113, 249, 196, 0.55);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 900;
-      letter-spacing: -0.035em;
+      gap: 0.8rem;
     }
 
     .brand img {
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
-      box-shadow: 0 18px 34px rgba(246, 197, 92, 0.22);
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(61, 218, 255, 0.32);
     }
 
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      font-size: 0.92rem;
-      color: var(--muted);
-      font-weight: 700;
+    .brand strong {
+      font-size: 1.03rem;
+      letter-spacing: 0.02em;
     }
-
-    .nav a { border-bottom: 1px solid rgba(255, 232, 163, 0.24); }
-    .nav a:hover { color: var(--gold-2); border-color: var(--gold); }
 
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      width: fit-content;
-      padding: 9px 14px;
-      border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.07);
-      color: var(--gold-2);
-      font-size: 0.82rem;
-      font-weight: 800;
+      color: var(--accent);
+      background: rgba(17, 33, 71, 0.65);
+      backdrop-filter: blur(10px);
+      border-radius: 999px;
+      padding: 0.38rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
       letter-spacing: 0.01em;
-      backdrop-filter: blur(14px);
+    }
+
+    .pill--muted {
+      color: var(--muted);
+      border-color: rgba(130, 158, 255, 0.18);
+      background: rgba(12, 22, 48, 0.55);
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 44px;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1.6rem;
       align-items: center;
-      padding: 62px 0 88px;
+      margin-bottom: 1.8rem;
     }
 
-    h1 {
-      margin: 20px 0 18px;
-      font-size: clamp(44px, 7vw, 88px);
-      line-height: 0.92;
-      letter-spacing: -0.08em;
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
     }
 
-    .gold-text {
-      background: linear-gradient(135deg, #fff6c8, var(--gold), var(--amber));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .lead {
-      margin: 0;
-      max-width: 66ch;
-      color: var(--muted);
-      font-size: clamp(18px, 2vw, 22px);
-      line-height: 1.58;
-    }
-
-    .actions {
+    .hero-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 13px;
-      margin-top: 28px;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .hero-copy { padding: 1.7rem; }
+
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 3.25rem);
+      margin: 0.2rem 0 0.75rem;
+      line-height: 1.07;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0 0 1.15rem;
+      color: var(--muted);
+      font-size: 1.03rem;
+      max-width: 54ch;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
     }
 
     .button {
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 0.76rem 1rem;
+      transition: transform 0.2s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 50px;
-      padding: 14px 18px;
-      border-radius: 16px;
-      font-weight: 900;
-      transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+      min-width: 180px;
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
     }
 
-    .button:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .button:hover { transform: translateY(-2px); }
+
+    .button.ghost {
+      min-width: auto;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(113, 249, 196, 0.35);
+    }
 
     .button.primary {
-      color: #241205;
-      background: linear-gradient(135deg, var(--gold-2), var(--gold), var(--amber));
-      box-shadow: 0 18px 50px rgba(243, 154, 53, 0.34);
+      color: #2d1a00;
+      background: linear-gradient(120deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
+      box-shadow: 0 12px 28px rgba(255, 193, 77, 0.4);
     }
 
     .button.secondary {
-      color: var(--gold-2);
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .stage {
-      min-height: 640px;
-      position: relative;
-    }
-
-    .halo {
-      position: absolute;
-      inset: 30px -20px auto -20px;
-      height: 430px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(246, 197, 92, 0.38), transparent 64%);
-      filter: blur(18px);
-    }
-
-    .device {
-      position: relative;
-      width: min(430px, 100%);
-      margin: 0 auto;
-      padding: 18px;
-      border-radius: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: linear-gradient(155deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      overflow: hidden;
-    }
-
-    .screen {
-      position: relative;
-      min-height: 540px;
-      overflow: hidden;
-      border-radius: 30px;
-      padding: 24px;
-      color: #241205;
-      background:
-        linear-gradient(160deg, #fffaf0 0 48%, #f2f6ff 49% 62%, #2c170b 63% 100%);
-    }
-
-    .screen::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: var(--filter-color);
-      mix-blend-mode: multiply;
-      transition: background 0.35s ease;
-    }
-
-    .preview-card {
-      position: relative;
-      z-index: 1;
-      margin-top: 270px;
-      padding: 18px;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.75);
-      box-shadow: 0 20px 48px rgba(0,0,0,0.18);
-    }
-
-    .preview-card strong { display: block; font-size: 22px; margin-bottom: 6px; }
-    .preview-card p { margin: 0; color: #6e4a20; }
-
-    .filter-panel {
-      position: relative;
-      z-index: 3;
-      margin: -58px auto 0;
-      width: min(610px, 100%);
-      padding: 18px;
-      border-radius: 28px;
-      border: 1px solid var(--border);
-      background: rgba(36, 18, 5, 0.78);
-      box-shadow: 0 24px 70px rgba(0,0,0,0.33);
-      backdrop-filter: blur(18px);
-    }
-
-    .filter-panel h2 { margin: 0 0 12px; font-size: 22px; letter-spacing: -0.03em; }
-
-    .filter-buttons {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-    }
-
-    .filter-button {
-      min-height: 70px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
       color: var(--text);
-      background: rgba(255,255,255,0.08);
-      cursor: pointer;
-      font-weight: 900;
-      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      border: 1px solid var(--border);
+      background: rgba(17, 33, 71, 0.75);
     }
 
-    .filter-button:hover,
-    .filter-button.active {
-      transform: translateY(-2px);
-      border-color: rgba(255, 232, 163, 0.9);
-      background: rgba(246, 197, 92, 0.2);
+    .meta {
+      margin-top: 0.2rem;
+      font-size: 0.9rem;
+      color: #d2def7;
     }
 
-    .section { padding: 76px 0; }
+    .hero-image { padding: 0.8rem; }
+
+    .hero-image img {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+      min-height: 390px;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .section {
+      margin-top: 1rem;
+      margin-bottom: 1.2rem;
+    }
 
     .section h2 {
-      margin: 0 0 14px;
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 1;
-      letter-spacing: -0.06em;
+      margin: 0;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.015em;
     }
 
-    .section-lead { max-width: 68ch; }
+    .section-lead {
+      max-width: 62ch;
+    }
 
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
-    .download-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+    .section-divider {
+      height: 1px;
+      margin: 0.5rem 0 0;
+      background: linear-gradient(90deg, transparent, rgba(130, 158, 255, 0.35), transparent);
+      border: 0;
+    }
 
-    .card {
+    .section p {
+      color: var(--muted);
+      margin: 0.45rem 0 0;
+    }
+
+    .features,
+    .platforms {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 0.85rem;
+    }
+
+    .feature,
+    .platform {
+      padding: 1.05rem 1.1rem;
+      border-radius: var(--radius-inner);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 26px;
-      background: var(--card);
-      box-shadow: 0 18px 64px rgba(0,0,0,0.22);
-      backdrop-filter: blur(18px);
+      background: rgba(15, 25, 54, 0.62);
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
-    .card h3 { margin: 0 0 10px; font-size: 22px; }
-    .card p { color: var(--muted); margin: 0; }
+    .feature:hover,
+    .platform:hover {
+      background: rgba(20, 32, 68, 0.75);
+      border-color: rgba(150, 178, 255, 0.32);
+    }
 
-    .download-card {
+    .platform-head {
       display: flex;
-      min-height: 220px;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 20px;
-      background: linear-gradient(150deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06));
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 0.4rem;
     }
 
-    .download-card small { color: var(--muted-2); }
+    .platform-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .platform-tag.win {
+      color: #7ecbff;
+      background: rgba(100, 180, 255, 0.15);
+      border: 1px solid rgba(100, 180, 255, 0.35);
+    }
+
+    .platform-tag.mac {
+      color: #f0f0f5;
+      background: rgba(200, 200, 220, 0.12);
+      border: 1px solid rgba(200, 200, 230, 0.28);
+    }
+
+    .platform-tag.and {
+      color: #9be07a;
+      background: rgba(120, 200, 90, 0.14);
+      border: 1px solid rgba(140, 220, 100, 0.32);
+    }
+
+    .platform strong {
+      font-size: 1.02rem;
+      font-weight: 700;
+    }
+
+    .feature h3 { margin: 0 0 0.45rem; font-size: 1rem; }
+
+    .feature p,
+    .platform p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .gamer-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-top: 0.9rem;
+    }
+
+    .gamer-panel {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(155deg, rgba(16, 26, 56, 0.92), rgba(8, 12, 28, 0.98));
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .gamer-panel-visual {
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(130, 158, 255, 0.14);
+      background: linear-gradient(180deg, rgba(22, 30, 52, 0.55) 0%, rgba(7, 10, 20, 0.96) 100%);
+    }
+
+    .gamer-panel-visual svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+    }
+
+    .gamer-visual-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+      text-align: center;
+      padding: 0.65rem 0.9rem 0.8rem;
+      background: rgba(4, 7, 16, 0.5);
+    }
+
+    .gamer-visual-k {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9eb0d4;
+    }
+
+    .gamer-visual-k--warm {
+      color: #ffd9b8;
+    }
+
+    .gamer-visual-desc {
+      font-size: 0.74rem;
+      color: var(--muted);
+      line-height: 1.35;
+      max-width: 26ch;
+    }
+
+    .gamer-panel-body {
+      padding: 1rem 1.15rem 1.2rem;
+    }
+
+    .gamer-panel-body h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .gamer-panel-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .checkout-grid,
+    .download-grid {
+      margin-top: 0.9rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .download-grid--sale {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .btn-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-top: 0.35rem;
+    }
+
+    .btn-stack .button {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .checkout-card,
+    .download-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.95rem;
+      background: rgba(18, 29, 63, 0.64);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .download-card:hover,
+    .checkout-card:hover {
+      border-color: rgba(150, 178, 255, 0.38);
+      background: rgba(22, 35, 72, 0.72);
+    }
+
+    .checkout-card h3,
+    .download-card h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1rem;
+    }
+
+    .checkout-card p,
+    .download-card p {
+      margin: 0 0 0.75rem;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
 
     .warning {
-      margin-top: 24px;
-      padding: 16px 18px;
-      border: 1px solid rgba(246, 197, 92, 0.45);
-      border-radius: 18px;
-      background: rgba(246, 197, 92, 0.11);
-      color: #ffe8a3;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      border: 1px solid var(--warning-border);
+      border-radius: 12px;
+      background: var(--warning-bg);
+      color: #ffe8a6;
+      font-size: 0.92rem;
     }
 
     .footer {
-      padding: 42px 0 54px;
+      margin-top: 1.6rem;
+      padding: 1rem;
+      border-top: 1px solid var(--border);
       color: var(--muted);
+      font-size: 0.9rem;
       display: flex;
       flex-wrap: wrap;
+      gap: 0.75rem;
       justify-content: space-between;
-      gap: 16px;
-      border-top: 1px solid var(--border);
+      align-items: center;
     }
 
-    .footer a { color: var(--gold-2); border-bottom: 1px solid rgba(255,232,163,0.32); }
+    .footer a {
+      color: #c5d9ff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(197, 217, 255, 0.4);
+    }
+
+    .license-highlights {
+      list-style: none;
+      margin: 0.85rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .license-highlights li {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      padding: 0.65rem 0.75rem;
+      border-radius: var(--radius-inner);
+      border: 1px solid rgba(130, 158, 255, 0.2);
+      background: rgba(10, 18, 42, 0.45);
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+
+    .license-highlights li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      margin-top: 0.45rem;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      box-shadow: 0 0 12px rgba(113, 249, 196, 0.65);
+    }
 
     @media (max-width: 920px) {
-      .hero, .grid, .download-grid { grid-template-columns: 1fr; }
-      .stage { min-height: auto; }
-      .filter-buttons { grid-template-columns: repeat(2, 1fr); }
-      .nav { display: none; }
+      .hero,
+      .features,
+      .gamer-showcase,
+      .platforms,
+      .checkout-grid,
+      .download-grid,
+      .download-grid--sale {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="container topbar">
-    <a class="brand" href="#">
-      <img src="./assets/saludvisual-app-icon-shield-final.png" alt="" width="48" height="48" decoding="async">
-      <span>Salud Visual <span class="gold-text">3.0</span></span>
-    </a>
-    <nav class="nav" aria-label="Principal">
-      <a href="#demo">Probar filtros</a>
-      <a href="#premium">Premium</a>
-      <a href="#descargas">Descargas</a>
-      <a href="./soporte.html">Soporte</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="container hero">
+  <div id="svPageFilter" aria-hidden="true"></div>
+  <div class="container">
+    <div class="sv-filter-bar" role="region" aria-label="Demo de filtro visual">
       <div>
-        <span class="pill">Version 3.0 premium · Windows · macOS · iPhone · Android</span>
-        <h1>Prueba el filtro antes de <span class="gold-text">descargarlo.</span></h1>
-        <p class="lead">
-          Salud Visual 3.0 convierte la proteccion visual en una experiencia premium: filtros calidos, licencia por dispositivo y una demo interactiva para encontrar tu tono ideal.
-        </p>
-        <div class="actions">
-          <a class="button primary" href="#demo">Probar filtros</a>
-          <a class="button secondary" href="#comprar">Comprar licencia</a>
-        </div>
+        <strong id="svFilterTitle">Filtro activo</strong>
+        <span id="svFilterHint"> · se adapta a tu hora local</span>
       </div>
+      <div class="filter-chip-row">
+        <button type="button" class="filter-chip" data-mode="auto">Auto</button>
+        <button type="button" class="filter-chip" data-mode="day">Dia</button>
+        <button type="button" class="filter-chip" data-mode="evening">Tarde</button>
+        <button type="button" class="filter-chip" data-mode="night">Noche</button>
+        <button type="button" class="filter-chip" data-mode="off">Sin filtro</button>
+      </div>
+    </div>
 
-      <div class="stage" id="demo">
-        <div class="halo"></div>
-        <div class="device">
-          <div class="screen" id="filterPreview">
-            <div class="preview-card">
-              <strong id="filterName">Dorado suave</strong>
-              <p id="filterDescription">Tono calido para lectura, trabajo y tardes largas frente a la pantalla.</p>
+    <header class="topbar">
+      <div class="brand">
+        <img src="./assets/saludvisual-app-icon-shield-final.png" alt="" width="46" height="46" decoding="async">
+        <strong>Salud Visual</strong>
+      </div>
+      <div class="topbar-right">
+        <span class="pill">saludvisual.shop · Windows · macOS · Android</span>
+        <nav class="top-nav" aria-label="Atajos">
+          <a href="#comprar">Comprar</a>
+          <a href="#gaming">Pantalla</a>
+          <a href="#descargas">Descargas</a>
+          <a href="./soporte.html">Soporte</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="card hero-copy">
+        <div class="hero-pills">
+          <span class="pill">Oferta lanzamiento: 2,99 EUR</span>
+          <span class="pill pill--muted">Prueba el filtro en esta misma pagina</span>
+        </div>
+        <h1>Protege tu vista mientras trabajas y estudias</h1>
+        <p class="subtitle">
+          Misma licencia para <strong style="color:var(--text);font-weight:600;">Windows, Mac y Android</strong>: filtro inteligente, ritmo dia/noche y control fino.
+          Tras comprar en Stripe, descarga el <strong style="color:var(--text);font-weight:600;">.exe</strong>, el <strong style="color:var(--text);font-weight:600;">.apk</strong> o el <strong style="color:var(--text);font-weight:600;">.zip para Mac</strong> y activa con la clave que recibes por correo.
+        </p>
+        <div class="cta-row">
+          <a class="button primary" href="#comprar">Comprar ahora por 2,99 EUR</a>
+          <a class="button secondary" href="#descargas">Ver descargas oficiales</a>
+        </div>
+        <div class="cta-row" style="margin-bottom:0.35rem;">
+          <a class="button ghost" href="#descarga-android">Android (.apk)</a>
+          <a class="button ghost" href="#descarga-mac">macOS (.zip)</a>
+          <a class="button ghost" href="#descarga-windows">Windows (.exe)</a>
+        </div>
+        <p class="meta">Pago seguro con Stripe. La clave llega al correo del pago (revisa spam). Activa una sola vez por dispositivo segun pida la app. Enlaces de descarga verificados mas abajo.</p>
+      </div>
+      <div class="card hero-image">
+        <img src="./assets/saludvisual-screenshot-01-panel-principal-final.png" alt="Interfaz principal de Salud Visual" width="960" height="600" decoding="async" fetchpriority="high">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Por que la gente se queda con Salud Visual</h2>
+      <p class="section-lead">Diseno cuidado, control total y resultados inmediatos en la comodidad visual del dia a dia.</p>
+      <hr class="section-divider" aria-hidden="true">
+      <div class="features">
+        <article class="feature">
+          <h3>Filtro inteligente</h3>
+          <p>Ajusta temperatura e intensidad para sesiones largas de pantalla sin cansancio excesivo.</p>
+        </article>
+        <article class="feature">
+          <h3>Ritmo dia y noche</h3>
+          <p>Transiciones suaves para acompaniar tus horarios y respetar el descanso visual.</p>
+        </article>
+        <article class="feature">
+          <h3>Control profesional</h3>
+          <p>Opciones precisas de color, opacidad y perfil para usuarios exigentes y creadores.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="gaming" class="section">
+      <h2>Sesiones largas frente al monitor</h2>
+      <p class="section-lead">
+        Rankeds, shooters, MMO o noches de stream: pantallas brillantes y azules cargan la vista.
+        Salud Visual acompanica con filtro y ritmo para que sigas rindiendo sin ese cansancio seco al cerrar sesion.
+      </p>
+      <div class="gamer-showcase">
+        <article class="gamer-panel">
+          <div class="gamer-panel-visual">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 168" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <defs>
+                <linearGradient id="svc-cold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3d6aa3"/>
+                  <stop offset="50%" stop-color="#1e3555"/>
+                  <stop offset="100%" stop-color="#0a101c"/>
+                </linearGradient>
+                <linearGradient id="svc-glare" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#fff" stop-opacity="0.14"/>
+                  <stop offset="45%" stop-color="#fff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <rect x="40" y="18" width="280" height="130" rx="16" fill="#0c0f18" stroke="rgba(160, 178, 220, 0.16)" stroke-width="1"/>
+              <rect x="52" y="30" width="256" height="106" rx="8" fill="#020408"/>
+              <rect x="58" y="36" width="244" height="94" rx="5" fill="url(#svc-cold)"/>
+              <rect x="58" y="36" width="244" height="40" rx="5" fill="url(#svc-glare)"/>
+              <line x1="72" y1="82" x2="288" y2="82" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+              <line x1="72" y1="96" x2="248" y2="96" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="72" y1="108" x2="220" y2="108" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+              <rect x="168" y="148" width="24" height="7" rx="2" fill="#252b3d"/>
+              <path d="M142 148 h76 v5 h-76 z" fill="#1a2030"/>
+            </svg>
+            <div class="gamer-visual-meta">
+              <span class="gamer-visual-k">Luz fria</span>
+              <span class="gamer-visual-desc">Perfil tipico sin software de bienestar visual</span>
             </div>
           </div>
-        </div>
-        <div class="filter-panel">
-          <h2>Boton demo: elige un filtro</h2>
-          <div class="filter-buttons" role="group" aria-label="Filtros de demostracion">
-            <button class="filter-button active" data-filter="gold">Dorado</button>
-            <button class="filter-button" data-filter="amber">Ambar</button>
-            <button class="filter-button" data-filter="sunset">Atardecer</button>
-            <button class="filter-button" data-filter="night">Noche</button>
-            <button class="filter-button" data-filter="focus">Focus</button>
+          <div class="gamer-panel-body">
+            <h3>Sin filtro</h3>
+            <p>La luz azul del monitor hace sentir mayor cansancio visual y ayuda a la rotura de los ritmos circadianos.</p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="container section" id="premium">
-      <span class="pill">Mas sorprendente. Mas claro. Mas vendible.</span>
-      <h2>Una experiencia visual que se entiende en segundos.</h2>
-      <p class="lead section-lead">La web 3.0 no solo explica Salud Visual: deja que el cliente sienta el cambio, pruebe intensidades y descargue la version correcta.</p>
-      <div class="grid">
-        <article class="card">
-          <h3>Demo interactiva</h3>
-          <p>El cliente compara tonos y entiende por que un filtro calido reduce la agresividad del blanco y azul.</p>
         </article>
-        <article class="card">
-          <h3>Licencia premium</h3>
-          <p>Activacion clara contra la API oficial y una experiencia coherente en escritorio y movil.</p>
-        </article>
-        <article class="card">
-          <h3>Multi-tienda</h3>
-          <p>Preparada para Microsoft Store, App Store, Google Play y descarga directa desde la web.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="container section" id="descargas">
-      <span class="pill">Descargas oficiales 3.0</span>
-      <h2>Una sola marca para todas tus pantallas.</h2>
-      <div class="download-grid">
-        <article class="download-card">
-          <div>
-            <h3>Windows</h3>
-            <p>Instalador premium para PC.</p>
-            <small>Microsoft Store / descarga directa</small>
+        <article class="gamer-panel">
+          <div class="gamer-panel-visual">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 168" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <defs>
+                <linearGradient id="svw-base" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3d6aa3"/>
+                  <stop offset="100%" stop-color="#0e1828"/>
+                </linearGradient>
+                <linearGradient id="svw-warm" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stop-color="#d96530" stop-opacity="0.72"/>
+                  <stop offset="50%" stop-color="#f4a862" stop-opacity="0.42"/>
+                  <stop offset="100%" stop-color="#ffe8d4" stop-opacity="0.22"/>
+                </linearGradient>
+                <linearGradient id="svw-glare" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#fff" stop-opacity="0.09"/>
+                  <stop offset="50%" stop-color="#fff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <rect x="40" y="18" width="280" height="130" rx="16" fill="#0c0f18" stroke="rgba(160, 178, 220, 0.16)" stroke-width="1"/>
+              <rect x="52" y="30" width="256" height="106" rx="8" fill="#020408"/>
+              <rect x="58" y="36" width="244" height="94" rx="5" fill="url(#svw-base)"/>
+              <rect x="58" y="36" width="244" height="94" rx="5" fill="url(#svw-warm)"/>
+              <rect x="58" y="36" width="244" height="38" rx="5" fill="url(#svw-glare)"/>
+              <line x1="72" y1="82" x2="288" y2="82" stroke="rgba(255,255,255,0.045)" stroke-width="1"/>
+              <line x1="72" y1="96" x2="248" y2="96" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+              <line x1="72" y1="108" x2="220" y2="108" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+              <rect x="168" y="148" width="24" height="7" rx="2" fill="#252b3d"/>
+              <path d="M142 148 h76 v5 h-76 z" fill="#1a2030"/>
+            </svg>
+            <div class="gamer-visual-meta">
+              <span class="gamer-visual-k gamer-visual-k--warm">Temperatura calida</span>
+              <span class="gamer-visual-desc">Misma escena con filtro Salud Visual (ilustracion esquematica)</span>
+            </div>
           </div>
-          <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/InstalarSaludVisual-3.0.0.exe" target="_blank" rel="noopener">Descargar Windows</a>
-        </article>
-        <article class="download-card">
-          <div>
-            <h3>macOS</h3>
-            <p>ZIP firmado y notarizado para Apple Silicon e Intel.</p>
-            <small>Gatekeeper compatible</small>
+          <div class="gamer-panel-body">
+            <h3>Con filtro aplicado</h3>
+            <p>Se reduce el golpe del azul y del blanco puro; el panel se percibe mas acorde con entornos de poca luz ambiental.</p>
           </div>
-          <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-mac-osx-arm64.zip" target="_blank" rel="noopener">Mac Apple Silicon</a>
-        </article>
-        <article class="download-card">
-          <div>
-            <h3>iPhone</h3>
-            <p>Asistente iOS con guias para filtros nativos y Atajos.</p>
-            <small>App Store</small>
-          </div>
-          <a class="button secondary" href="#comprar">Proximamente</a>
-        </article>
-        <article class="download-card">
-          <div>
-            <h3>Android</h3>
-            <p>Build universal y version adaptada para HyperOS.</p>
-            <small>Google Play / APK</small>
-          </div>
-          <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-3.0.0-android-universal.apk" target="_blank" rel="noopener">Descargar Android</a>
         </article>
       </div>
     </section>
 
-    <section class="container section card" id="comprar">
-      <span class="pill">Oferta premium de lanzamiento</span>
-      <h2>Compra una licencia y activa Salud Visual 3.0.</h2>
-      <p class="lead">Pago seguro con Stripe. La clave llega al correo del pago y se usa en la ventana de activacion de la app.</p>
-      <div class="actions">
-        <a class="button primary" href="https://buy.stripe.com/5kQ7sL6SwacIdu02ASfQI00" target="_blank" rel="noopener">Comprar con Stripe</a>
-        <a class="button secondary" href="./soporte.html">Necesito soporte</a>
+    <section id="plataformas" class="section">
+      <h2>Disponible para todas tus plataformas</h2>
+      <p class="section-lead">Una sola compra cubre escritorio y movil: activa en Windows, en tu Mac (Apple Silicon o Intel) y en Android con el mismo flujo de licencia.</p>
+      <div class="platforms">
+        <article class="platform">
+          <div class="platform-head">
+            <span class="platform-tag win" aria-hidden="true">W</span>
+            <strong>Windows</strong>
+          </div>
+          <p>Instalador .exe para productividad y sesiones largas en el PC.</p>
+        </article>
+        <article class="platform">
+          <div class="platform-head">
+            <span class="platform-tag mac" aria-hidden="true">M</span>
+            <strong>macOS</strong>
+          </div>
+          <p>Paquetes .zip para Apple Silicon y para Intel; mismo instalador dentro del ZIP.</p>
+        </article>
+        <article class="platform">
+          <div class="platform-head">
+            <span class="platform-tag and" aria-hidden="true">A</span>
+            <strong>Android</strong>
+          </div>
+          <p>APK universal para coherencia visual entre movil y ordenador.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section card" style="padding:1.2rem;">
+      <h2>Una licencia, todas las descargas</h2>
+      <p class="section-lead" style="margin-top:0.4rem;">No hace falta volver a pagar por cambiar de sistema: usa la clave que recibes por correo en la ventana de activacion de cada app.</p>
+      <ul class="license-highlights">
+        <li><span>Compra en Stripe y guarda el correo con la clave <strong style="color:var(--text);">SV-…</strong>.</span></li>
+        <li><span>En <strong style="color:var(--text);">Android</strong>, permite “origenes desconocidos” o instala el APK segun tu fabricante, y concede el permiso de superposicion si la app lo pide.</span></li>
+        <li><span>En <strong style="color:var(--text);">Mac</strong>, si Gatekeeper avisa, abre con clic derecho → Abrir la primera vez, o ajusta Privacidad y seguridad en Ajustes del sistema.</span></li>
+      </ul>
+    </section>
+
+    <section id="descargas" class="section card" style="padding:1.2rem;">
+      <h2>Descargas oficiales</h2>
+      <p class="section-lead" style="margin-top:0.4rem;">Enlaces directos desde el almacenamiento de releases. Elige tu plataforma; la licencia es la misma para todas.</p>
+      <div class="download-grid download-grid--sale">
+        <article class="download-card" id="descarga-android">
+          <h3>Android</h3>
+          <p>Elige segun tu dispositivo. Si tienes un Xiaomi o Redmi con <strong>HyperOS</strong> y el filtro se desactiva al bloquear la pantalla, descarga la build especifica.</p>
+          <div class="btn-stack">
+            <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-2.2.8-android-universal.apk" target="_blank" rel="noopener">Android universal (.apk)</a>
+            <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-2.2.8-android-hyperos.apk" target="_blank" rel="noopener">Xiaomi/Redmi HyperOS (.apk)</a>
+          </div>
+        </article>
+        <article class="download-card" id="descarga-mac">
+          <h3>macOS</h3>
+          <p>ZIP con los bundles <strong>InstalarSaludVisual.app</strong> y <strong>SaludVisual.app</strong>. Descomprime y abre <strong>InstalarSaludVisual.app</strong> primero.</p>
+          <div class="btn-stack">
+            <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-2.2.8-mac-osx-arm64.zip" target="_blank" rel="noopener">Apple Silicon (arm64)</a>
+            <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/SaludVisual-2.2.8-mac-osx-x64.zip" target="_blank" rel="noopener">Intel (x64)</a>
+          </div>
+        </article>
+        <article class="download-card" id="descarga-windows">
+          <h3>Windows</h3>
+          <p>Instalador .exe recomendado para escritorio.</p>
+          <a class="button secondary" href="https://stsaludvisual73023.blob.core.windows.net/releases/InstalarSaludVisual-2.2.8.exe" target="_blank" rel="noopener">Instalador .exe</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="comprar" class="section card" style="padding:1.2rem;">
+      <h2>Compra directa (Windows, Mac y Android)</h2>
+      <p class="section-lead" style="margin-top:0.4rem;">Un solo pago con Stripe desbloquea la licencia para todas las builds oficiales: elige luego el instalador que corresponda a tu dispositivo.</p>
+      <div class="checkout-grid">
+        <article class="checkout-card">
+          <h3>Stripe</h3>
+          <p>Pago con tarjeta de forma rapida y segura.</p>
+          <a class="button primary" href="https://buy.stripe.com/5kQ7sL6SwacIdu02ASfQI00" target="_blank" rel="noopener">Pagar con Stripe</a>
+        </article>
       </div>
       <div class="warning">
-        Tras pagar, revisa tu correo y spam. Si la clave no llega, escribe a <strong>soporte@saludvisual.shop</strong>.
+        Tras pagar con Stripe deberias llegar a <strong>https://saludvisual.shop/gracias.html</strong>. Ahi mismo puedes descargar el instalador. Tu <strong>clave de licencia</strong> se envia al correo que indiques en Stripe (revisa spam). Dudas o incidencias: <strong>soporte@saludvisual.shop</strong>.
       </div>
     </section>
-  </main>
 
-  <footer class="container footer">
-    <span>Publicador: Eric Sanchez Linares · Salud Visual 3.0</span>
-    <span><a href="./privacidad.html">Privacidad</a> · <a href="./soporte.html">Soporte</a> · <a href="./sitemap.xml">Mapa del sitio</a></span>
-  </footer>
+    <footer class="footer">
+      <span>Publicador: Eric Sanchez Linares</span>
+      <span>
+        <a href="./privacidad.html">Politica de privacidad</a>
+        ·
+        <a href="./soporte.html">Soporte tecnico</a>
+        ·
+        <a href="./installer-exit-codes.html">Codigos del instalador</a>
+        ·
+        <a href="./sitemap.xml">Mapa del sitio</a>
+      </span>
+    </footer>
+  </div>
 
   <script>
-    const filters = {
-      gold: { color: 'rgba(255, 196, 64, 0.30)', name: 'Dorado suave', description: 'Tono calido para lectura, trabajo y tardes largas frente a la pantalla.' },
-      amber: { color: 'rgba(255, 150, 36, 0.38)', name: 'Ambar protector', description: 'Mas presencia calida para reducir brillo frio y crear sensacion de descanso.' },
-      sunset: { color: 'rgba(226, 92, 32, 0.36)', name: 'Atardecer', description: 'Filtro envolvente para ultimas horas del dia y transicion hacia la noche.' },
-      night: { color: 'rgba(160, 42, 24, 0.48)', name: 'Noche profunda', description: 'Tono rojizo mas intenso para reducir luz fria antes de dormir.' },
-      focus: { color: 'rgba(255, 214, 96, 0.18)', name: 'Focus premium', description: 'Ligero, elegante y discreto para trabajar con menos fatiga sin perder claridad.' }
-    };
+    (function () {
+      var filters = {
+        day: {
+          color: "rgba(255, 196, 64, 0.16)",
+          title: "Filtro diurno",
+          hint: " · tono calido suave para trabajo y lectura"
+        },
+        evening: {
+          color: "rgba(255, 150, 36, 0.24)",
+          title: "Filtro de tarde",
+          hint: " · mas ambar para reducir luz fria"
+        },
+        night: {
+          color: "rgba(190, 70, 30, 0.32)",
+          title: "Filtro nocturno",
+          hint: " · tono protector para horas bajas"
+        },
+        off: {
+          color: "transparent",
+          title: "Sin filtro",
+          hint: " · vista original de la pagina"
+        }
+      };
 
-    const preview = document.getElementById('filterPreview');
-    const nameEl = document.getElementById('filterName');
-    const descriptionEl = document.getElementById('filterDescription');
+      var root = document.documentElement;
+      var titleEl = document.getElementById("svFilterTitle");
+      var hintEl = document.getElementById("svFilterHint");
+      var chips = Array.prototype.slice.call(document.querySelectorAll(".filter-chip"));
+      var mode = "auto";
 
-    document.querySelectorAll('.filter-button').forEach((button) => {
-      button.addEventListener('click', () => {
-        const filter = filters[button.dataset.filter];
-        preview.style.setProperty('--filter-color', filter.color);
-        nameEl.textContent = filter.name;
-        descriptionEl.textContent = filter.description;
-        document.querySelectorAll('.filter-button').forEach((item) => item.classList.remove('active'));
-        button.classList.add('active');
+      function getAutoMode() {
+        var hour = new Date().getHours();
+        if (hour >= 6 && hour < 17) return "day";
+        if (hour >= 17 && hour < 21) return "evening";
+        return "night";
+      }
+
+      function applyMode(nextMode) {
+        mode = nextMode;
+        var effective = mode === "auto" ? getAutoMode() : mode;
+        var filter = filters[effective] || filters.day;
+        root.style.setProperty("--page-filter", filter.color);
+        titleEl.textContent = mode === "auto" ? ("Auto: " + filter.title) : filter.title;
+        hintEl.textContent = filter.hint;
+        chips.forEach(function (chip) {
+          chip.classList.toggle("active", chip.getAttribute("data-mode") === mode);
+        });
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          applyMode(chip.getAttribute("data-mode"));
+        });
       });
-    });
+
+      applyMode("auto");
+      setInterval(function () {
+        if (mode === "auto") applyMode("auto");
+      }, 60000);
+    })();
   </script>
 </body>
 </html>
