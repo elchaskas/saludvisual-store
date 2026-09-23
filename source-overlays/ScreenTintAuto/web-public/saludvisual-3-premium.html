@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Salud Visual 3.0 Premium</title>
+  <meta name="description" content="Salud Visual 3.0 Premium ayuda a ajustar filtros visuales y rutinas de descanso en Windows, macOS, iPhone y Android.">
+  <style>
+    :root {
+      --bg: #110c07;
+      --bg-2: #231407;
+      --card: rgba(255, 246, 226, 0.1);
+      --card-strong: rgba(255, 246, 226, 0.16);
+      --text: #fff7e6;
+      --muted: #d7bc86;
+      --gold: #f7c85b;
+      --gold-2: #fff0a8;
+      --amber: #f29a2e;
+      --terra: #9a4f2d;
+      --wine: #4a1b17;
+      --green: #56d6a3;
+      --border: rgba(255, 216, 135, 0.24);
+      --shadow: rgba(0, 0, 0, 0.38);
+      --filter-color: rgba(255, 196, 64, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(247, 200, 91, 0.34), transparent 32%),
+        radial-gradient(circle at 85% 12%, rgba(154, 79, 45, 0.34), transparent 30%),
+        linear-gradient(135deg, var(--bg), var(--bg-2) 48%, #3a1d10);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      position: relative;
+      z-index: 4;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 50% 50%, #1d1409 0 21%, transparent 22%),
+        radial-gradient(circle at 50% 50%, var(--gold-2) 0 45%, transparent 46%),
+        linear-gradient(135deg, var(--terra), var(--gold));
+      box-shadow: 0 16px 32px rgba(247, 200, 91, 0.26);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--gold-2);
+      font-weight: 700;
+      width: fit-content;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 48px;
+      align-items: center;
+      padding: 68px 0 84px;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: clamp(46px, 7vw, 88px);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+      margin: 22px 0;
+    }
+
+    .gold-text {
+      background: linear-gradient(135deg, #fff5c7, var(--gold), var(--amber));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      color: #ead4a3;
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.55;
+      margin: 0 0 28px;
+      max-width: 680px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 18px;
+      padding: 15px 20px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+
+    .btn-primary {
+      color: #1d1005;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold), var(--amber));
+      box-shadow: 0 18px 44px rgba(242, 154, 46, 0.32);
+    }
+
+    .btn-ghost {
+      color: var(--gold-2);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+    }
+
+    .device-stage {
+      position: relative;
+      min-height: 610px;
+    }
+
+    .halo {
+      position: absolute;
+      inset: 5% 0 auto 0;
+      height: 430px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(247, 200, 91, 0.38), transparent 62%);
+      filter: blur(18px);
+    }
+
+    .device {
+      position: relative;
+      width: min(420px, 100%);
+      margin: 0 auto;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 38px;
+      padding: 18px;
+      background: linear-gradient(155deg, rgba(255,255,255,0.2), rgba(255,255,255,0.04));
+      box-shadow: 0 30px 90px var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .screen {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      min-height: 520px;
+      padding: 24px;
+      background:
+        linear-gradient(160deg, #fffaf0, #e6f1ff 55%, #22150a 56%, #4a2d17);
+      color: #1f160f;
+    }
+
+    .screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--filter-color);
+      mix-blend-mode: multiply;
+      transition: background .35s ease;
+      pointer-events: none;
+    }
+
+    .mini-card {
+      position: relative;
+      z-index: 2;
+      margin-top: 245px;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.16);
+    }
+
+    .mini-card strong { display: block; font-size: 22px; margin-bottom: 8px; }
+    .mini-card p { margin: 0; color: #6a4a23; line-height: 1.45; }
+
+    .filter-panel {
+      position: relative;
+      z-index: 3;
+      width: min(560px, 100%);
+      margin: -64px auto 0;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: rgba(35, 20, 7, 0.78);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 70px var(--shadow);
+    }
+
+    .filter-panel h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+
+    .filter-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .filter-button {
+      min-height: 68px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: #fff8e0;
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .filter-button:hover,
+    .filter-button.active {
+      transform: translateY(-2px);
+      border-color: rgba(255, 230, 160, 0.82);
+      background: rgba(247, 200, 91, 0.2);
+    }
+
+    .section {
+      padding: 78px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-title {
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1;
+      letter-spacing: -0.06em;
+      margin: 0 0 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .card {
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.18);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .store-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .store {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--gold-2);
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .footer {
+      padding: 44px 0 54px;
+      color: #c9ad76;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 36px; }
+      .grid, .store-row { grid-template-columns: 1fr; }
+      .filter-buttons { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="container nav">
+    <a class="brand" href="#">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Salud Visual <span class="gold-text">3.0</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#demo">Probar filtros</a>
+      <a href="#premium">Premium</a>
+      <a href="#descargas">Descargas</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="container hero">
+      <div>
+        <span class="pill">Nueva version premium 3.0</span>
+        <h1>Tu pantalla, <span class="gold-text">mas amable</span> con tus ojos.</h1>
+        <p class="lead">
+          Salud Visual 3.0 adapta tu experiencia visual con filtros calidos,
+          rutinas inteligentes y activacion premium en Windows, macOS, iPhone y Android.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#demo">Probar filtros ahora</a>
+          <a class="btn btn-ghost" href="#descargas">Ver descargas</a>
+        </div>
+      </div>
+
+      <div class="device-stage" id="demo">
+        <div class="halo"></div>
+        <div class="device">
+          <div class="screen" id="filterPreview">
+            <div class="mini-card">
+              <strong id="filterName">Dorado suave</strong>
+              <p id="filterDescription">Un tono calido para lectura, trabajo de oficina y tardes largas frente a la pantalla.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-panel" aria-label="Demo de filtros">
+          <h2>Prueba el filtro antes de descargar</h2>
+          <div class="filter-buttons">
+            <button class="filter-button active" data-filter="gold">Dorado</button>
+            <button class="filter-button" data-filter="amber">Ambar</button>
+            <button class="filter-button" data-filter="sunset">Atardecer</button>
+            <button class="filter-button" data-filter="night">Noche</button>
+            <button class="filter-button" data-filter="focus">Focus</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="premium">
+      <div class="container">
+        <span class="pill">Experiencia premium</span>
+        <h2 class="section-title">Mas llamativa, mas clara, mas facil de vender.</h2>
+        <p class="lead">Una web preparada para convertir: demostracion visual, propuesta premium y descargas por plataforma.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>Filtros demostrables</h3>
+            <p>El visitante no solo lee: prueba distintos tonos y entiende el beneficio en segundos.</p>
+          </article>
+          <article class="card">
+            <h3>Licencia 3.0</h3>
+            <p>Activacion por instalacion, API propia y experiencia coherente entre escritorio y movil.</p>
+          </article>
+          <article class="card">
+            <h3>Lista para tiendas</h3>
+            <p>Mensaje adaptado a Microsoft Store, App Store, Google Play y descarga directa desde la web.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="descargas">
+      <div class="container">
+        <span class="pill">Disponible proximamente</span>
+        <h2 class="section-title">Una sola marca. Todas tus pantallas.</h2>
+        <div class="store-row">
+          <a class="store" href="#">Windows</a>
+          <a class="store" href="#">macOS</a>
+          <a class="store" href="#">iPhone</a>
+          <a class="store" href="#">Android</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Salud Visual 3.0 Premium - saludvisual.shop</p>
+    </div>
+  </footer>
+
+  <script>
+    const filters = {
+      gold: {
+        color: "rgba(255, 196, 64, 0.28)",
+        name: "Dorado suave",
+        description: "Un tono calido para lectura, trabajo de oficina y tardes largas frente a la pantalla."
+      },
+      amber: {
+        color: "rgba(255, 150, 36, 0.36)",
+        name: "Ambar protector",
+        description: "Mas presencia calida para reducir brillo frio y crear una sensacion de descanso."
+      },
+      sunset: {
+        color: "rgba(226, 92, 32, 0.34)",
+        name: "Atardecer",
+        description: "Un filtro envolvente para ultimas horas del dia y transicion hacia la noche."
+      },
+      night: {
+        color: "rgba(160, 42, 24, 0.44)",
+        name: "Noche profunda",
+        description: "Un tono rojizo mas intenso para reducir luz fria antes de dormir."
+      },
+      focus: {
+        color: "rgba(255, 214, 96, 0.18)",
+        name: "Focus premium",
+        description: "Ligero, elegante y discreto para trabajar con menos fatiga sin perder claridad."
+      }
+    };
+
+    const preview = document.getElementById("filterPreview");
+    const nameEl = document.getElementById("filterName");
+    const descriptionEl = document.getElementById("filterDescription");
+
+    document.querySelectorAll(".filter-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = filters[button.dataset.filter];
+        preview.style.setProperty("--filter-color", filter.color);
+        nameEl.textContent = filter.name;
+        descriptionEl.textContent = filter.description;
+        document.querySelectorAll(".filter-button").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
