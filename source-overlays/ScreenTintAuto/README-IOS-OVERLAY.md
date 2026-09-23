@@ -67,13 +67,13 @@ En el Mac:
 ```bash
 cd /ruta/a/ScreenTintAuto
 chmod +x scripts/reconstruir-saludvisual-macos.sh
-VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh arm64
+VERSION=3.0.0 scripts/reconstruir-saludvisual-macos.sh arm64
 ```
 
 Para ambas arquitecturas:
 
 ```bash
-VERSION=2.2.8 scripts/reconstruir-saludvisual-macos.sh all
+VERSION=3.0.0 scripts/reconstruir-saludvisual-macos.sh all
 ```
 
 Para publicar desde la web a clientes finales, firma y notariza:
@@ -83,7 +83,7 @@ cd /ruta/a/ScreenTintAuto
 
 MACOS_SIGN_IDENTITY="Developer ID Application: Eric Sanchez Linares (...)" \
 MACOS_NOTARY_PROFILE=saludvisual-notary \
-VERSION=2.2.8 \
+VERSION=3.0.0 \
 scripts/reconstruir-saludvisual-macos.sh all
 ```
 

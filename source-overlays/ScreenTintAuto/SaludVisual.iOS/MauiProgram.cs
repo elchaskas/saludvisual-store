@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using SaludVisual.iOS.Services;
 using SaludVisual.Shared.Licensing;
 
@@ -16,10 +15,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<IosLicenseStateStore>();
         builder.Services.AddSingleton<DeviceFingerprintService>();
         builder.Services.AddSingleton<App>();
-
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
 
         return builder.Build();
     }

@@ -1,0 +1,5 @@
+# Salud Visual — base para indexación (refinar en fase SEO).
+User-agent: *
+Allow: /
+
+Sitemap: https://saludvisual.shop/sitemap.xml
