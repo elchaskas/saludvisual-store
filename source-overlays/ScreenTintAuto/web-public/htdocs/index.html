@@ -575,15 +575,57 @@
     }
 
     .footer {
-      margin-top: 1.6rem;
-      padding: 1rem;
-      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+      padding: 1.35rem 1.2rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(10, 16, 38, 0.72);
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.92rem;
+      display: grid;
+      gap: 1rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .footer-main {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 1rem 1.5rem;
       justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .footer-credit {
+      max-width: 42rem;
+      line-height: 1.55;
+    }
+
+    .footer-credit strong {
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .footer-credit p {
+      margin: 0.35rem 0 0;
+      color: var(--muted);
+    }
+
+    .footer-credit .creator-link {
+      color: var(--gold-1);
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 224, 138, 0.55);
+    }
+
+    .footer-credit .creator-link:hover {
+      color: #fff0b5;
+      border-bottom-color: #fff0b5;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 0.9rem;
       align-items: center;
     }
 
@@ -591,6 +633,11 @@
       color: #c5d9ff;
       text-decoration: none;
       border-bottom: 1px solid rgba(197, 217, 255, 0.4);
+    }
+
+    .footer a:hover {
+      color: var(--accent);
+      border-bottom-color: rgba(113, 249, 196, 0.55);
     }
 
     .license-highlights {
@@ -882,16 +929,26 @@
     </section>
 
     <footer class="footer">
-      <span>Publicador: Eric Sanchez Linares</span>
-      <span>
-        <a href="./privacidad.html">Politica de privacidad</a>
-        ·
-        <a href="./soporte.html">Soporte tecnico</a>
-        ·
-        <a href="./installer-exit-codes.html">Codigos del instalador</a>
-        ·
-        <a href="./sitemap.xml">Mapa del sitio</a>
-      </span>
+      <div class="footer-main">
+        <div class="footer-credit">
+          <strong>Salud Visual</strong>
+          <p>
+            Creado y desarrollado por
+            <a class="creator-link" href="https://www.instagram.com/ericsanchezlinares/" target="_blank" rel="noopener noreferrer">Eric Sanchez Linares</a>.
+          </p>
+          <p>
+            Diseno, desarrollo y publicacion del producto.
+            Perfil:
+            <a class="creator-link" href="https://www.instagram.com/ericsanchezlinares/" target="_blank" rel="noopener noreferrer">instagram.com/ericsanchezlinares</a>
+          </p>
+        </div>
+        <nav class="footer-links" aria-label="Enlaces legales">
+          <a href="./privacidad.html">Politica de privacidad</a>
+          <a href="./soporte.html">Soporte tecnico</a>
+          <a href="./installer-exit-codes.html">Codigos del instalador</a>
+          <a href="./sitemap.xml">Mapa del sitio</a>
+        </nav>
+      </div>
     </footer>
   </div>
 
