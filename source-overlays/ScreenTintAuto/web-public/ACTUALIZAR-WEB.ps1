@@ -1,51 +1,60 @@
-# Sobrescribe SOLO tu carpeta web existente. No crea carpetas nuevas.
+# Reescribe TODOS los index.html malos de Salud Visual en D: (no crea carpetas nuevas).
 $ErrorActionPreference = "Stop"
-
-$candidates = @(
-  "D:\ScreenTintAuto\web 3.0",
-  "D:\Salud Visual\web",
-  "D:\ScreenTintAuto\web"
+$base = "https://raw.githubusercontent.com/elchaskas/saludvisual-store/cursor/mac-activation-parity-e403/source-overlays/ScreenTintAuto/web-public"
+$pages = @(
+  "htdocs/index.html",
+  "htdocs/gracias.html",
+  "htdocs/privacidad.html",
+  "htdocs/soporte.html",
+  "htdocs/installer-exit-codes.html",
+  "htdocs/robots.txt",
+  "htdocs/sitemap.xml"
 )
 
-$dest = $null
-foreach ($c in $candidates) {
-  if (Test-Path -LiteralPath $c) { $dest = $c; break }
+$roots = @()
+foreach ($r in @("D:\ScreenTintAuto", "D:\Salud Visual", "D:\ScreenTintAuto\web 3.0", "D:\Salud Visual\web")) {
+  if (Test-Path -LiteralPath $r) { $roots += $r }
 }
-
-if (-not $dest) {
-  Write-Host "ERROR: no existe ninguna de estas carpetas:"
-  $candidates | ForEach-Object { Write-Host " - $_" }
-  Write-Host "Dime la ruta exacta de tu carpeta web y lo ajusto. NO se ha creado nada nuevo."
+if ($roots.Count -eq 0) {
+  Write-Host "No encuentro D:\ScreenTintAuto ni D:\Salud Visual. Abre PowerShell y ejecuta: Get-PSDrive"
   exit 1
 }
 
-Write-Host "Usando carpeta existente: $dest"
+Write-Host "Buscando index.html de Salud Visual en:"
+$roots | ForEach-Object { Write-Host "  $_" }
 
-$zip = Join-Path $env:TEMP "saludvisual-store-branch.zip"
-$extract = Join-Path $env:TEMP "saludvisual-store-branch"
-Remove-Item -LiteralPath $zip -Force -ErrorAction SilentlyContinue
-if (Test-Path -LiteralPath $extract) { Remove-Item -LiteralPath $extract -Recurse -Force }
+$dirs = Get-ChildItem -Path $roots -Recurse -Filter index.html -File -ErrorAction SilentlyContinue |
+  Where-Object {
+    $raw = Get-Content -LiteralPath $_.FullName -Raw -ErrorAction SilentlyContinue
+    $raw -and ($raw -match "Salud Visual|saludvisual")
+  } |
+  ForEach-Object { $_.Directory.FullName } |
+  Select-Object -Unique
 
-Invoke-WebRequest -Uri "https://github.com/elchaskas/saludvisual-store/archive/refs/heads/cursor/mac-activation-parity-e403.zip" -OutFile $zip
-Expand-Archive -Path $zip -DestinationPath $extract -Force
-$srcRoot = Get-ChildItem -LiteralPath $extract -Directory | Select-Object -First 1
-$web = Join-Path $srcRoot.FullName "source-overlays\ScreenTintAuto\web-public"
-
-# Overwrite files in place
-Copy-Item -LiteralPath (Join-Path $web "htdocs\*") -Destination $dest -Recurse -Force
-$assetsDest = Join-Path $dest "assets"
-if (-not (Test-Path -LiteralPath $assetsDest)) {
-  # Solo crea assets DENTRO de la carpeta que ya existe, si faltaba
-  New-Item -ItemType Directory -Path $assetsDest | Out-Null
+if (-not $dirs) {
+  Write-Host "No he encontrado ningun index.html de Salud Visual. Dime la ruta exacta del index.html que abres."
+  exit 1
 }
-Copy-Item -LiteralPath (Join-Path $web "assets\*") -Destination $assetsDest -Recurse -Force
 
-# Cleanup temp only
-Remove-Item -LiteralPath $zip -Force -ErrorAction SilentlyContinue
-Remove-Item -LiteralPath $extract -Recurse -Force -ErrorAction SilentlyContinue
+foreach ($dir in $dirs) {
+  Write-Host ""
+  Write-Host "SOBREESCRIBIENDO: $dir"
+  foreach ($rel in $pages) {
+    $name = Split-Path $rel -Leaf
+    $out = Join-Path $dir $name
+    Invoke-WebRequest -Uri "$base/$rel" -OutFile $out -UseBasicParsing
+    Write-Host "  OK $name"
+  }
+  $check = Get-Content -LiteralPath (Join-Path $dir "index.html") -Raw
+  if ($check -match "3\.0 Premium") {
+    Write-Host "  FALLO: sigue diciendo 3.0 Premium"
+  } elseif ($check -match "ericsanchezlinares\.com" -and $check -match "data-sv-build") {
+    Write-Host "  VERIFICADO: index correcto (ericsanchezlinares.com + filtro)"
+  } else {
+    Write-Host "  AVISO: descarga hecha, revisa el archivo"
+  }
+}
 
 Write-Host ""
-Write-Host "LISTO. Archivos sobrescritos en: $dest"
-Write-Host "Comprueba que index.html contiene: ericsanchezlinares.com y data-sv-build"
-Write-Host "Luego sube ESA misma carpeta a IONOS (httpdocs), sobrescribiendo index.html y assets."
-explorer $dest
+Write-Host "Hecho en disco local. Para que cambie saludvisual.shop hay que subir ESE index.html a IONOS httpdocs (sobrescribir)."
+Write-Host "Si activas Tailscale/SSH al VPS desde aqui, lo subo yo sin que tengas que tocar Plesk."
